@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2300986b6a5d0bb01cb5910a688bc989",
+    "revision": "af5cbc98c778068ea348eb6824cda9dc",
     "url": "/redvixenmusic/index.html"
   },
   {
-    "revision": "44f3680e792bd3cc3de7",
+    "revision": "bacdfea51de7c05e653c",
     "url": "/redvixenmusic/static/css/main.89063df7.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/redvixenmusic/static/js/2.b64bf447.chunk.js"
   },
   {
-    "revision": "44f3680e792bd3cc3de7",
-    "url": "/redvixenmusic/static/js/main.16ec678f.chunk.js"
+    "revision": "bacdfea51de7c05e653c",
+    "url": "/redvixenmusic/static/js/main.cda3801d.chunk.js"
   },
   {
     "revision": "0c4ee05619d849e3efa2",
