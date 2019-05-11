@@ -1,0 +1,32 @@
+.home-page {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	height: 80vh;
+}
+
+
+.titleCard {
+	padding-left: 15vw;
+	padding-top: 10vh;
+	padding-bottom: 10vh;
+	color: #ffb56b;
+	background-color: #f5f5dc;
+	box-shadow: 15px solid black;
+}
+
+.name-link:hover {
+	color: #ffb56b;
+}
+
+.name-link {
+	color: #008080;
+}
+
+.name-text {
+	color: #008080;
+}
+
+.subtitles {
+	margin-left: 30px;
+}

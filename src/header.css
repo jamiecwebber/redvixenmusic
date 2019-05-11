@@ -1,0 +1,45 @@
+#header {
+	height: 5vh;
+	min-height: 25px;
+	background-color: #CF5C36;
+	color: #ffb56b;
+	position: sticky;
+	top: 0px;
+	padding-left: 20px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.logo {
+	max-height: 4vh;
+	width: auto;
+}
+
+.headerSections a, .headerSections h1 {
+	margin-left: 15px;
+	font-size: 24px;
+	line-height: 1.6;
+	margin-top: 3px;
+	text-decoration: none;
+	color: #ffb56b;
+}
+
+
+.headerSections h2 {
+	margin: 15px;
+	font-size: 16px;
+}
+
+.headerSections a:hover, .headerSections h1:hover {
+	color: #efefef;
+	text-decoration: none;
+}
+
+.headerSections {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	margin-right: 15px;
+	flex-direction: row;
+}

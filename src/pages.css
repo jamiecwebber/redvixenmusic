@@ -1,0 +1,30 @@
+.title{
+	display: flex;
+	align-items: center;
+}
+
+.project-description a {
+	margin-left: 20px;
+}
+
+.project img {
+	margin: 0px 35px;
+}
+
+.project {
+	display: flex;
+	justify-content: space-between;
+	padding: 45px 0px;
+	border-top: 2px solid #dddddd;
+}
+
+.project-description {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.dev-project-container {
+	padding-right: 100px;
+	
+}
