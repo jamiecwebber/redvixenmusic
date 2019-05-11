@@ -10,12 +10,12 @@ class Header extends Component {
 			<div id='header'>
 				<div className="headerSections">
 					<img className='logo' src={logo} alt=''/> 
-					<Link to="/">
+					<Link to="/redvixenmusic">
 						<h1 className='title'>Red Vixen Music</h1>
 					</Link>
 				</div>
 				<div className="headerSections">
-					<Link to="/"><h2>home</h2></Link>
+					<Link to="/redvixenmusic"><h2>home</h2></Link>
 					<Link to="/dev/"><h2>web development</h2></Link>
 					<Link to="/music/"><h2>composition</h2></Link>
 					<Link to="/audio/"><h2>audio programming</h2></Link>

@@ -53,7 +53,7 @@ function AppRouter() {
 			<div>
 				<Header />
 
-				<Route path="/" exact component={Index} />
+				<Route path="/redvixenmusic" component={Index} />
 				<Route path="/dev" component={Dev} />
 				<Route path="/music" component={Music} />
 				<Route path="/audio" component={Audio} />
