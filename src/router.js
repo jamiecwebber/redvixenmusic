@@ -54,10 +54,10 @@ function AppRouter() {
 				<Header />
 
 				<Route path="/redvixenmusic" component={Index} />
-				<Route path="/redvixenmusic/dev" component={Dev} />
-				<Route path="/redvixenmusic/music" component={Music} />
-				<Route path="/redvixenmusic/audio" component={Audio} />
-				<Route path="/redvixenmusic/contact" component={Contact} />
+				<Route path="/dev" component={Dev} />
+				<Route path="/music" component={Music} />
+				<Route path="/audio" component={Audio} />
+				<Route path="/contact" component={Contact} />
 			</div>
 		</Router>
 	);

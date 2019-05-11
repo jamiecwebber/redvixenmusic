@@ -11,9 +11,9 @@ const TitleCard = () => {
           <h1 className="name-text">Jamie Christopher Webber</h1>
          
           <div className="subtitles">
-            <Link to='/redvixenmusic/dev/'><h2 className='name-link'>web developer</h2></Link>
-            <Link to='/redvixenmusic/music/'><h2 className='name-link'>composer/improviser</h2></Link>
-            <Link to='/redvixenmusic/audio/'><h2 className='name-link'>creative audio programmer</h2></Link>
+            <Link to='/dev/'><h2 className='name-link'>web developer</h2></Link>
+            <Link to='/music/'><h2 className='name-link'>composer/improviser</h2></Link>
+            <Link to='/audio/'><h2 className='name-link'>creative audio programmer</h2></Link>
           </div>
           <br/>
       </section>

@@ -16,10 +16,10 @@ class Header extends Component {
 				</div>
 				<div className="headerSections">
 					<Link to="/redvixenmusic"><h2>home</h2></Link>
-					<Link to="/redvixenmusic/dev/"><h2>web development</h2></Link>
-					<Link to="/redvixenmusic/music/"><h2>composition</h2></Link>
-					<Link to="/redvixenmusic/audio/"><h2>audio programming</h2></Link>
-					<Link to="/redvixenmusic/contact/"><h2>contact</h2></Link>
+					<Link to="/dev/"><h2>web development</h2></Link>
+					<Link to="/music/"><h2>composition</h2></Link>
+					<Link to="/audio/"><h2>audio programming</h2></Link>
+					<Link to="/contact/"><h2>contact</h2></Link>
 				</div>
 			</div>
 		)
