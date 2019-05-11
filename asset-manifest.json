@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/redvixenmusic/static/css/main.89063df7.chunk.css",
+    "main.js": "/redvixenmusic/static/js/main.15da22f1.chunk.js",
+    "main.js.map": "/redvixenmusic/static/js/main.15da22f1.chunk.js.map",
+    "runtime~main.js": "/redvixenmusic/static/js/runtime~main.85136d81.js",
+    "runtime~main.js.map": "/redvixenmusic/static/js/runtime~main.85136d81.js.map",
+    "static/js/2.f7ab1cef.chunk.js": "/redvixenmusic/static/js/2.f7ab1cef.chunk.js",
+    "static/js/2.f7ab1cef.chunk.js.map": "/redvixenmusic/static/js/2.f7ab1cef.chunk.js.map",
+    "index.html": "/redvixenmusic/index.html",
+    "precache-manifest.1a76a7195d6fc8e0ca7bcb4808298d4c.js": "/redvixenmusic/precache-manifest.1a76a7195d6fc8e0ca7bcb4808298d4c.js",
+    "service-worker.js": "/redvixenmusic/service-worker.js",
+    "static/css/main.89063df7.chunk.css.map": "/redvixenmusic/static/css/main.89063df7.chunk.css.map",
+    "static/media/midigen.jpg": "/redvixenmusic/static/media/midigen.15e06fea.jpg",
+    "static/media/yanni.jpg": "/redvixenmusic/static/media/yanni.b69902ee.jpg"
+  }
+}
