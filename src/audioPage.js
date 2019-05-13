@@ -8,7 +8,7 @@ const AudioPage = () => {
 		<div>
 			<h2>Audio Programming</h2>
 			<br/>
-			<p>My interest in audio programming mainly focusses on two compositional goals - expanding my resources for composing microtonal music, and exploring the possibility of uisng musical timbre as an compositional parameter. In the future I intend to expand this to include a third - situating the sounds in a space and creating immersive audio experiences.</p>
+			<p>My interest in audio programming mainly focusses on two compositional goals - expanding my resources for composing microtonal music, and exploring the possibility of using musical timbre as an compositional parameter. In the future I intend to expand this to include a third - situating the sounds in a space and creating immersive audio experiences.</p>
 			<br/>
 			<div className='project'>	
 				<div className='project-description'>
