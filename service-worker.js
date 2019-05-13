@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/redvixenmusic/precache-manifest.3642ef20ade056bb16dad72f81ed3b64.js"
+  "/redvixenmusic/precache-manifest.551702aecd08cb344ba86ba9520383be.js"
 );
 
 self.addEventListener('message', (event) => {
