@@ -7,7 +7,7 @@ const DevPage = () => {
 			<br/>
 			<p>I'm a graduate of <b><a href="https://www.lewagon.com/">Le Wagon Full-Stack Web Development Bootcamp</a></b>. This website was built in React.js with a Python Flask backend. I have experience with Ruby on Rails, JavaScript, HTML5/CSS, as well as a familiarity with the Google Cloud Platform and AWS.</p>
 			<div className='project'>
-				<div className='dev-project-container'>
+				<div className='project-container'>
 					<h1>Asyla: Solutions for Refugees and Refugee Resettlement Agencies</h1>
 					<div className='project-description'>
 						<p>A common experience of refugees arriving in Canada is a lack of coherence in the services offered by resettlement agencies, and these agencies often struggle to keep up with the many facets of receiving a newcomer into our society. Asyla was built to respond to this need. Through a mobile application, the refugee can track their progress on a number of goals, consult a calendar of upcoming appointments, have access to reference images of important documents, and directly contact their resettlement agent if a problem arises. An employee of the resettlement agency can access a full-screen view where she can manage several clients, respond to their queries and see the important tasks in a single unified view.</p>
