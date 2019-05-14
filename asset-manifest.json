@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/redvixenmusic/static/css/main.dfae20f7.chunk.css",
-    "main.js": "/redvixenmusic/static/js/main.7d58d392.chunk.js",
-    "main.js.map": "/redvixenmusic/static/js/main.7d58d392.chunk.js.map",
+    "main.css": "/redvixenmusic/static/css/main.b3bc984f.chunk.css",
+    "main.js": "/redvixenmusic/static/js/main.f941abea.chunk.js",
+    "main.js.map": "/redvixenmusic/static/js/main.f941abea.chunk.js.map",
     "runtime~main.js": "/redvixenmusic/static/js/runtime~main.6930cfba.js",
     "runtime~main.js.map": "/redvixenmusic/static/js/runtime~main.6930cfba.js.map",
     "static/js/2.b64bf447.chunk.js": "/redvixenmusic/static/js/2.b64bf447.chunk.js",
     "static/js/2.b64bf447.chunk.js.map": "/redvixenmusic/static/js/2.b64bf447.chunk.js.map",
     "index.html": "/redvixenmusic/index.html",
-    "precache-manifest.8e641b2443b86683c89965b016c5ef61.js": "/redvixenmusic/precache-manifest.8e641b2443b86683c89965b016c5ef61.js",
+    "precache-manifest.c882f6b37920b3490b94a9cb5227daf2.js": "/redvixenmusic/precache-manifest.c882f6b37920b3490b94a9cb5227daf2.js",
     "service-worker.js": "/redvixenmusic/service-worker.js",
-    "static/css/main.dfae20f7.chunk.css.map": "/redvixenmusic/static/css/main.dfae20f7.chunk.css.map",
+    "static/css/main.b3bc984f.chunk.css.map": "/redvixenmusic/static/css/main.b3bc984f.chunk.css.map",
     "static/media/midigen.jpg": "/redvixenmusic/static/media/midigen.15e06fea.jpg",
     "static/media/yanni.jpg": "/redvixenmusic/static/media/yanni.b69902ee.jpg"
   }
