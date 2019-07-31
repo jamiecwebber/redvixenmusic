@@ -6,22 +6,19 @@
         font-size: 100%;
         vertical-align: baseline;
         background: transparent;
-				
-				font-family: 'Vollkorn', serif;
+		font-family: 'Vollkorn', serif;
     }
 
 .fullPage {
 	background-color: #e5f2f2;
-	min-height: 100vh;
 }
 
 .bodyContainer {
-	background-color: #fafaed;
+	background-color: #7DC2AD;
+	width:100%;
+	height: calc(85vh - 50px);
 	margin: 0px auto;
-	width: 60%;
-	min-width: 1000px;
-	height: 85vh;
-	overflow-y: scroll;
+	overflow-y: auto;
 }
 
 .pageContent {
@@ -49,9 +46,9 @@ h3 {
 
 a {
 	text-decoration: none;
-	color: #ffb56b;
+	color: #CF5C36;
 }
 
 a:hover {
-	color: #CF5C36;
+	color: #C38D9E;
 }

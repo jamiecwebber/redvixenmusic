@@ -2,6 +2,8 @@
 	position: fixed;
 	bottom: 0px;
 	width: 60%;
+	height: 15vh;
 	min-width: 1000px;
-	height:15vh;
+	grid-area: player;
+	flex-grow:0;
 }
