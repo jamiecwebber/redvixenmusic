@@ -4,7 +4,7 @@ import axios from 'axios';
 import Header from './header'
 import AppRouter from './router'
 import Player from './player'
-import './index.css'
+import './index.scss'
 
 
 class App extends Component {
@@ -20,13 +20,10 @@ class App extends Component {
   render() {
     return (
       <div className="fullPage">
-        <div className="bodyContainer">
-
           <AppRouter />
           <Player />
-          
-        </div>
       </div>
+      
     )
   }
 };

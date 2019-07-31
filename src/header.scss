@@ -1,7 +1,6 @@
 #header {
-	height: 5vh;
-	min-height: 25px;
-	background-color: #CF5C36;
+	grid-area: header;
+	background-color: #E27D60;
 	color: #ffb56b;
 	position: sticky;
 	top: 0px;
@@ -12,8 +11,7 @@
 }
 
 .logo {
-	max-height: 4vh;
-	width: auto;
+	height: 40px;
 }
 
 .headerSections a, .headerSections h1 {
@@ -34,7 +32,7 @@
 }
 
 .headerSections a:hover, .headerSections h1:hover {
-	color: #efefef;
+	color: #CF5C36;
 	text-decoration: none;
 }
 

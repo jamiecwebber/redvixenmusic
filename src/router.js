@@ -52,12 +52,14 @@ function AppRouter() {
 		<Router>
 			<div>
 				<Header />
-				<Route exact path='/' render={()=> <Redirect to='/redvixenmusic'/>}/>
-				<Route path="/redvixenmusic" component={Index} />
-				<Route path="/dev" component={Dev} />
-				<Route path="/music" component={Music} />
-				<Route path="/audio" component={Audio} />
-				<Route path="/contact" component={Contact} />
+        		<div className="bodyContainer">	
+					<Route exact path='/' render={()=> <Redirect to='/redvixenmusic'/>}/>
+					<Route path="/redvixenmusic" component={Index} />
+					<Route path="/dev" component={Dev} />
+					<Route path="/music" component={Music} />
+					<Route path="/audio" component={Audio} />
+					<Route path="/contact" component={Contact} />
+				</div>
 			</div>
 		</Router>
 	);

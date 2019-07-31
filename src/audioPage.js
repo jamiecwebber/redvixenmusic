@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './pages.css';
+import './pages.scss';
 import midigen from './images/midigen.jpg';
 import yanni from './images/yanni.jpg';
 
