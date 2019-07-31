@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Redirect, Route, Link } from "react-router-dom";
 import TitleCard from './titleCard'
 import Header from './header'
 import DevPage from './devPage'
@@ -52,7 +52,7 @@ function AppRouter() {
 		<Router>
 			<div>
 				<Header />
-
+				<Route exact path='/' render={()=> <Redirect to='/redvixenmusic'/>}/>
 				<Route path="/redvixenmusic" component={Index} />
 				<Route path="/dev" component={Dev} />
 				<Route path="/music" component={Music} />
