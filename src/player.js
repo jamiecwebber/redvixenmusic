@@ -9,9 +9,14 @@ class Player extends Component {
 	constructor() {
 		super();
 		this.state = {
-			selectedTrack: null,
+			selectedTrack: "Éclair de lune",
 			player: "stopped"
 		}
+		
+	}
+
+	componentDidMount() {
+		this.player.src = eclair;
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -36,10 +41,9 @@ class Player extends Component {
 			} else if (this.state.player === 'stopped') {
 				this.player.pause();
 				this.player.currentTime = 0;
-				this.setState({selectedTrack: null });
 			} else if (
 				this.state.player === 'playing' &&
-				prevState.player === 'paused'
+				prevState.player === 'paused' || prevState.player === 'stopped'
 			) {
 				this.player.play();
 			}
@@ -49,37 +53,41 @@ class Player extends Component {
 	render() {
 		const list = [{id: 1, title: 'Éclair de lune'}].map(item => {
 			return (
-				<li
+				<h1
+					className="song-title"
 					key={item.id}
 					onClick={() => this.setState({ selectedTrack: item.title})}
 				>
 				{item.title}
-				</li>
+				</h1>
 			);
 		});
 
 		return (
 			<div className="player">
-				<ul>{list}</ul>
 				<div className='player-controls'>
+					{list}
 					<div className='controls-row1'>
-						{this.state.player === 'paused' && (
+						{this.state.player === 'paused' || this.state.player === 'stopped' ? (
 							<button className='start-pause' onClick={()=> this.setState({ player: "playing" })}>
 								<FontAwesomeIcon icon={faPlay} />
 							</button>
-						)}
-						{this.state.player === 'playing' && (
+						) : (
 							<button className='start-pause' onClick={()=> this.setState({ player: "paused" })}>
 								<FontAwesomeIcon icon={faPause} />
 							</button>
 						)}
 					</div>
 					<div className='controls-row2'>
-						{this.state.player === 'playing' || this.state.player === 'paused' ? (
-							<button className='stop' onClick={() => this.setState({ player: 'stopped' })}>
-								<FontAwesomeIcon icon={faStop} />
-							</button>
-						) : ( "" )}
+						<button className='forward-back'>
+							<FontAwesomeIcon icon={faBackward}/>
+						</button>
+						<button className='stop' onClick={() => this.setState({ player: 'stopped' })}>
+							<FontAwesomeIcon icon={faStop} />
+						</button>
+						<button className='forward-back'>
+							<FontAwesomeIcon icon={faForward}/>
+						</button>
 					</div>
 				</div>
 				<audio ref={ref => this.player = ref} />
