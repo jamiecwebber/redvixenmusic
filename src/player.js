@@ -10,9 +10,11 @@ class Player extends Component {
 		super();
 		this.state = {
 			selectedTrack: "Éclair de lune",
-			player: "stopped"
+			player: "stopped",
+			audioData: new Uint8Array(0)
 		}
-		
+		this.canvas = React.createRef();
+		this.tick = this.tick.bind(this);
 	}
 
 
@@ -24,10 +26,53 @@ class Player extends Component {
 				duration: e.target.duration
 			});
 		});
+
+		// audio analyser
+		this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+		this.analyser = this.audioContext.createAnalyser();
+		this.bufferLength = this.analyser.frequencyBinCount;
+		this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+		this.analyser.getByteTimeDomainData(this.dataArray);
+		//this.canvas = document.getElementById('visualizer');
+		//this.canvasCtx = this.canvas.getContext('2d');
+		this.source = this.audioContext.createMediaElementSource(this.player);
+		this.source.connect(this.analyser);
+		this.rafId = requestAnimationFrame(this.tick);
+
+	}
+
+	tick() {
+		this.analyser.getByteTimeDomainData(this.dataArray);
+		this.setState({ audioData: this.dataArray });
+		this.rafId = requestAnimationFrame(this.tick);
+	}
+
+	draw() {
+		const canvas = this.canvas.current;
+		const height = canvas.height;
+		const width = canvas.width;
+		const context = canvas.getContext('2d');
+		let x = 0;
+		const sliceWidth = (width + 1.0)/ this.state.audioData.length;
+		context.lineWidth = 2;
+		context.strokeStyle = '#000000';
+		context.clearRect(0,0,width,height);
+		context.beginPath();
+		context.moveTo(0,height/2);
+		for (const item of this.state.audioData) {
+			const y = (item / 255.0) * height;
+			context.lineTo(x,y);
+			x += sliceWidth;
+		}
+		context.lineTo(x, height/2);
+		context.stroke();
 	}
 
 	componentWillUnmount() {
 		this.player.removeEventListener("timeupdate", ()=> {});
+		cancelAnimationFrame(this.rafId);
+		this.analyser.disconnect();
+		this.source.disconnect();
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -59,6 +104,7 @@ class Player extends Component {
 				this.player.play();
 			}
 		}
+		this.draw();
 	}
 
 	render() {
@@ -120,6 +166,11 @@ class Player extends Component {
 						</button>
 					</div>
 				</div>
+
+				<div className='waveform'>
+					<canvas id='visualizer' ref={this.canvas} />
+				</div>
+
 				<audio ref={ref => this.player = ref} />
 			</div>
 		);
@@ -127,3 +178,7 @@ class Player extends Component {
 }
 
 export default Player
+
+// thanks to
+// https://dev.to/ma5ly/lets-make-a-little-audio-player-in-react-p4p
+// https://www.twilio.com/blog/audio-visualisation-web-audio-api--react
