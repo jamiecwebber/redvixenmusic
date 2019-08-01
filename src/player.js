@@ -37,6 +37,7 @@ class Player extends Component {
 		//this.canvasCtx = this.canvas.getContext('2d');
 		this.source = this.audioContext.createMediaElementSource(this.player);
 		this.source.connect(this.analyser);
+		this.source.connect(this.audioContext.destination);
 		this.rafId = requestAnimationFrame(this.tick);
 
 	}
@@ -54,7 +55,7 @@ class Player extends Component {
 		const context = canvas.getContext('2d');
 		let x = 0;
 		const sliceWidth = (width + 1.0)/ this.state.audioData.length;
-		context.lineWidth = 2;
+		context.lineWidth = 5;
 		context.strokeStyle = '#000000';
 		context.clearRect(0,0,width,height);
 		context.beginPath();

@@ -65,10 +65,14 @@
 .waveform {
 	border: 1px solid magenta;
 	flex-grow: 1;
+	display: flex;
+	flex-direction:row;
+	align-items: center;
+
 }
 
 #visualizer {
 	border: 1px solid green;
-	width: 100%;
-	height: 100%;
+	width: 10vh;
+	height: 10vh;
 }
