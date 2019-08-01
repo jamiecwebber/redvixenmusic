@@ -15,8 +15,19 @@ class Player extends Component {
 		
 	}
 
+
 	componentDidMount() {
 		this.player.src = eclair;
+		this.player.addEventListener("timeupdate", e => {
+			this.setState({
+				currentTime: e.target.currentTime,
+				duration: e.target.duration
+			});
+		});
+	}
+
+	componentWillUnmount() {
+		this.player.removeEventListener("timeupdate", ()=> {});
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -63,10 +74,29 @@ class Player extends Component {
 			);
 		});
 
+
+		function getTime(time) {
+			if(!isNaN(time)) {
+				return Math.floor(time/60) + ':' + ('0' + Math.floor(time % 60)).slice(-2)
+			}
+		}
+
+		const currentTime = getTime(this.state.currentTime);
+		const duration = getTime(this.state.duration);
+
 		return (
 			<div className="player">
 				<div className='player-controls'>
 					{list}
+					{this.state.player === 'playing' || this.state.player === 'paused' ? (
+						<div className='playback-time'>
+							{currentTime} / {duration}
+						</div>
+					) : (
+						<div className='playback-time'>
+							
+						</div>
+					)}
 					<div className='controls-row1'>
 						{this.state.player === 'paused' || this.state.player === 'stopped' ? (
 							<button className='start-pause' onClick={()=> this.setState({ player: "playing" })}>
