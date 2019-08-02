@@ -45,38 +45,32 @@ class Player extends Component {
 		this.rafId = requestAnimationFrame(this.tick);
 
 
-		this.player.onloadedmetadata = () => {
-			const fullwave = document.getElementById('fullwave');
-			const player = document.getElementById('audioplayer');
-			const height = fullwave.height;
-			const width = fullwave.width;
-			const context = fullwave.getContext('2d');
-			const sliceWidth = (width)/(player.duration / 0.01);
-			context.linewitdh = 2;
-			context.strokeStyle = '#000000';
-			context.clearRect(0,0,width,height);
-			context.beginPath();
-			let x = 0;
-			context.moveTo(x,height/2);
+		// this.player.onloadedmetadata = () => {
+		// 	const fullwave = document.getElementById('fullwave');
+		// 	const height = fullwave.height;
+		// 	const width = fullwave.width;
+		// 	const context = fullwave.getContext('2d');
+		// 	const sliceWidth = (width)/(this.player.duration / 0.1);
+		// 	context.linewitdh = 2;
+		// 	context.strokeStyle = '#000000';
+		// 	context.clearRect(0,0,width,height);
+		// 	context.beginPath();
+		// 	let x = 0;
+		// 	context.moveTo(x,height/2);
 
-			this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-			this.analyser = this.audioContext.createAnalyser();
+		// 	while (this.player.currentTime < this.player.duration) {
+		// 		x += sliceWidth;
+		// 		this.player.currentTime += 0.1;
+		// 		this.analyser.getByteTimeDomainData(this.dataArray);
+		// 		this.setState({ audioData: this.dataArray });
+		// 		const y = (this.state.audioData[0] / 255.0) * height;
+		// 		context.lineTo(x,y);
+		// 	}
+		// 	context.lineTo(x, height/2);
+		// 	context.stroke();
+		// 	this.player.currentTime = 0;
 
-			this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
-			while (player.currentTime < player.duration) {
-				x += sliceWidth;
-				player.currentTime += 0.01;
-				this.analyser.getByteTimeDomainData(this.dataArray);
-				this.setState({ audioData: this.dataArray });
-				const y = (this.state.audioData[0] / 255.0) * height;
-				console.log(y);
-				context.lineTo(x,y);
-			}
-			context.lineTo(x, height/2);
-			context.stroke();
-			player.currentTime = 0;
-
-		}
+		// }
 
 
 	}
