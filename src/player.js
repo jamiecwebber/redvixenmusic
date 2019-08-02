@@ -18,9 +18,6 @@ class Player extends Component {
 		this.tick = this.tick.bind(this);
 	}
 
-	drawfullwave() {
-		
-	}
 
 
 	componentDidMount() {
@@ -122,12 +119,12 @@ class Player extends Component {
 			}
 			if(track) {
 				this.player.src = track;
-				this.drawfullwave();
 				this.player.play();
 				this.setState({player: 'playing'});
 			}
 		}
 		if (this.state.player !== prevState.player) {
+			console.log(this.state.player);
 			if (this.state.player === 'paused') {
 				this.player.pause();
 			} else if (this.state.player === 'stopped') {
@@ -137,6 +134,7 @@ class Player extends Component {
 				this.state.player === 'playing' &&
 				prevState.player === 'paused' || prevState.player === 'stopped'
 			) {
+				console.log('play');
 				this.player.play();
 			}
 		}
@@ -208,7 +206,7 @@ class Player extends Component {
 					<canvas id='visualizer' ref={this.canvas} />
 				</div>
 
-				<audio id='audioplayer' ref={ref => this.player = ref} preload='metadata'/>
+				<audio ref={ref => this.player = ref} />
 			</div>
 		);
 	}
