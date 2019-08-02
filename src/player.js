@@ -14,8 +14,12 @@ class Player extends Component {
 			audioData: new Uint8Array(0)
 		}
 		this.canvas = React.createRef();
-		this.fullwave = React.createRef();
+		this.full = React.createRef();
 		this.tick = this.tick.bind(this);
+	}
+
+	drawfullwave() {
+		
 	}
 
 
@@ -27,7 +31,6 @@ class Player extends Component {
 				duration: e.target.duration
 			});
 		});
-
 		// audio analyser
 		this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
 		this.analyser = this.audioContext.createAnalyser();
@@ -41,7 +44,40 @@ class Player extends Component {
 		this.source.connect(this.audioContext.destination);
 		this.rafId = requestAnimationFrame(this.tick);
 
-		this.drawfullwave();
+
+		this.player.onloadedmetadata = () => {
+			const fullwave = document.getElementById('fullwave');
+			const player = document.getElementById('audioplayer');
+			const height = fullwave.height;
+			const width = fullwave.width;
+			const context = fullwave.getContext('2d');
+			const sliceWidth = (width)/(player.duration / 0.01);
+			context.linewitdh = 2;
+			context.strokeStyle = '#000000';
+			context.clearRect(0,0,width,height);
+			context.beginPath();
+			let x = 0;
+			context.moveTo(x,height/2);
+
+			this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+			this.analyser = this.audioContext.createAnalyser();
+
+			this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+			while (player.currentTime < player.duration) {
+				x += sliceWidth;
+				player.currentTime += 0.01;
+				this.analyser.getByteTimeDomainData(this.dataArray);
+				this.setState({ audioData: this.dataArray });
+				const y = (this.state.audioData[0] / 255.0) * height;
+				console.log(y);
+				context.lineTo(x,y);
+			}
+			context.lineTo(x, height/2);
+			context.stroke();
+			player.currentTime = 0;
+
+		}
+
 
 	}
 
@@ -72,34 +108,6 @@ class Player extends Component {
 		context.stroke();
 	}
 
-	drawfullwave() {
-		console.log('drawfullwave');
-		const fullwave = this.fullwave.current;
-		const height = fullwave.height;
-		const width = fullwave.width;
-		const context = fullwave.getContext('2d');
-		const sliceWidth = (width)/(this.player.duration / 0.01);
-		context.linewitdh = 2;
-		context.strokeStyle = '#000000';
-		context.clearRect(0,0,width,height);
-		context.beginPath();
-		let x = 0;
-		context.moveTo(x,height/2);
-		console.log(this.player.duration);
-		console.log(this.player.currentTime);
-		while (this.player.currentTime < this.player.duration) {
-			x += sliceWidth;
-			this.player.currentTime += 0.01;
-			this.analyser.getByteTimeDomainData(this.dataArray);
-			const y = (this.dataArray[0] / 255.0) * height;
-			console.log(y);
-			context.lineTo(x,y);
-		}
-		context.lineTo(x, height/2);
-		context.stroke();
-		this.player.currentTime = 0;
-
-	}
 
 	componentWillUnmount() {
 		this.player.removeEventListener("timeupdate", ()=> {});
@@ -202,11 +210,11 @@ class Player extends Component {
 				</div>
 
 				<div className='waveform'>
-					<canvas id='fullwave' ref={this.fullwave} />
+					<canvas id='fullwave' ref={this.full} />
 					<canvas id='visualizer' ref={this.canvas} />
 				</div>
 
-				<audio ref={ref => this.player = ref} preload='metadata'/>
+				<audio id='audioplayer' ref={ref => this.player = ref} preload='metadata'/>
 			</div>
 		);
 	}
