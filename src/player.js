@@ -14,6 +14,7 @@ class Player extends Component {
 			audioData: new Uint8Array(0)
 		}
 		this.canvas = React.createRef();
+		this.fullwave = React.createRef();
 		this.tick = this.tick.bind(this);
 	}
 
@@ -39,6 +40,8 @@ class Player extends Component {
 		this.source.connect(this.analyser);
 		this.source.connect(this.audioContext.destination);
 		this.rafId = requestAnimationFrame(this.tick);
+
+		this.drawfullwave();
 
 	}
 
@@ -69,6 +72,35 @@ class Player extends Component {
 		context.stroke();
 	}
 
+	drawfullwave() {
+		console.log('drawfullwave');
+		const fullwave = this.fullwave.current;
+		const height = fullwave.height;
+		const width = fullwave.width;
+		const context = fullwave.getContext('2d');
+		const sliceWidth = (width)/(this.player.duration / 0.01);
+		context.linewitdh = 2;
+		context.strokeStyle = '#000000';
+		context.clearRect(0,0,width,height);
+		context.beginPath();
+		let x = 0;
+		context.moveTo(x,height/2);
+		console.log(this.player.duration);
+		console.log(this.player.currentTime);
+		while (this.player.currentTime < this.player.duration) {
+			x += sliceWidth;
+			this.player.currentTime += 0.01;
+			this.analyser.getByteTimeDomainData(this.dataArray);
+			const y = (this.dataArray[0] / 255.0) * height;
+			console.log(y);
+			context.lineTo(x,y);
+		}
+		context.lineTo(x, height/2);
+		context.stroke();
+		this.player.currentTime = 0;
+
+	}
+
 	componentWillUnmount() {
 		this.player.removeEventListener("timeupdate", ()=> {});
 		cancelAnimationFrame(this.rafId);
@@ -88,6 +120,7 @@ class Player extends Component {
 			}
 			if(track) {
 				this.player.src = track;
+				this.drawfullwave();
 				this.player.play();
 				this.setState({player: 'playing'});
 			}
@@ -169,10 +202,11 @@ class Player extends Component {
 				</div>
 
 				<div className='waveform'>
+					<canvas id='fullwave' ref={this.fullwave} />
 					<canvas id='visualizer' ref={this.canvas} />
 				</div>
 
-				<audio ref={ref => this.player = ref} />
+				<audio ref={ref => this.player = ref} preload='metadata'/>
 			</div>
 		);
 	}
