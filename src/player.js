@@ -40,8 +40,9 @@ class Player extends Component {
 		// this.analyser.getByteTimeDomainData(this.dataArray);
 		// //this.canvas = document.getElementById('visualizer');
 		// //this.canvasCtx = this.canvas.getContext('2d');
-		// this.source = this.audioContext.createMediaElementSource(this.player);
-		// this.source.connect(this.analyser);
+		console.log(this.player);
+		this.source = this.audioContext.createMediaElementSource(this.player);
+		this.source.connect(this.analyser);
 		// this.source.connect(this.audioContext.destination);
 		// this.rafId = requestAnimationFrame(this.tick);
 
