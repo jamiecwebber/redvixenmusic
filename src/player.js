@@ -32,9 +32,11 @@ class Player extends Component {
 		this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
 		this.analyser = this.audioContext.createAnalyser();
 		this.analyser.fftSize = 512;
-		console.log(this.analyser.fftSize);
+		console.log("fftsize - 512 " + this.analyser.fftSize);
 		this.bufferLength = this.analyser.frequencyBinCount;
-		// this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+		console.log("bufferLength = " + this.bufferLength);
+		this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
+		console.log("dataArray length 256 = " + this.dataArray.length);
 		// this.analyser.getByteTimeDomainData(this.dataArray);
 		// //this.canvas = document.getElementById('visualizer');
 		// //this.canvasCtx = this.canvas.getContext('2d');
