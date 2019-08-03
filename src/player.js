@@ -31,7 +31,8 @@ class Player extends Component {
 		// audio analyser
 		this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
 		this.analyser = this.audioContext.createAnalyser();
-		// this.bufferLength = this.analyser.frequencyBinCount;
+		console.log(this.analyser.fftSize);
+		this.bufferLength = this.analyser.frequencyBinCount;
 		// this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
 		// this.analyser.getByteTimeDomainData(this.dataArray);
 		// //this.canvas = document.getElementById('visualizer');
