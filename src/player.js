@@ -15,7 +15,7 @@ class Player extends Component {
 		}
 		// this.canvas = React.createRef();
 		// this.full = React.createRef();
-		// this.tick = this.tick.bind(this);
+		this.tick = this.tick.bind(this);
 	}
 
 
@@ -29,8 +29,8 @@ class Player extends Component {
 			});
 		});
 		// audio analyser
-		// this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-		// this.analyser = this.audioContext.createAnalyser();
+		this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+		this.analyser = this.audioContext.createAnalyser();
 		// this.bufferLength = this.analyser.frequencyBinCount;
 		// this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
 		// this.analyser.getByteTimeDomainData(this.dataArray);
@@ -72,11 +72,11 @@ class Player extends Component {
 
 	}
 
-	// tick() {
-	// 	this.analyser.getByteTimeDomainData(this.dataArray);
-	// 	this.setState({ audioData: this.dataArray });
-	// 	this.rafId = requestAnimationFrame(this.tick);
-	// }
+	tick() {
+		this.analyser.getByteTimeDomainData(this.dataArray);
+		this.setState({ audioData: this.dataArray });
+		this.rafId = requestAnimationFrame(this.tick);
+	}
 
 	// draw() {
 	// 	const canvas = this.canvas.current;
@@ -203,7 +203,7 @@ class Player extends Component {
 
 				<div className='waveform'>
 					{/* <canvas id='fullwave' ref={this.full} /> */}
-					{/* <canvas id='visualizer' ref={this.canvas} /> */}
+					<canvas id='visualizer' ref={this.canvas} />
 				</div>
 
 				<audio ref={ref => this.player = ref} />
