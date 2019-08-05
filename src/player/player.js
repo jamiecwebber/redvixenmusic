@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faStop, faPause, faForward, faBackward } from '@fortawesome/free-solid-svg-icons'
 import './player.scss'
+import AudioAnalyser from './AudioAnalyser'
 import eclair from '../audio/eclairdelune.wav'
 
 class Player extends Component {
@@ -15,7 +16,6 @@ class Player extends Component {
 		}
 		this.canvas = React.createRef();
 		// this.full = React.createRef();
-		this.tick = this.tick.bind(this);
 	}
 
 
@@ -50,26 +50,18 @@ class Player extends Component {
 		this.player.oncanplaythrough = () => {
 			console.log('canplaythrough');
 		}
-		
+
+		console.log('analyser loaded');
 		// audio analyser
 		this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
-		this.analyser = this.audioContext.createAnalyser();
-		this.analyser.fftSize = 512;
-		console.log("fftsize - 512 " + this.analyser.fftSize);
-		this.bufferLength = this.analyser.frequencyBinCount;
-		console.log("bufferLength = " + this.bufferLength);
-		this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
-		console.log("dataArray length 256 = " + this.dataArray.length);
-		this.analyser.getByteTimeDomainData(this.dataArray);
+		
 		// this.canvas = document.getElementById('visualizer');
 		// this.canvasCtx = this.canvas.getContext('2d');
 		console.log(this.player);
 		this.source = this.audioContext.createMediaElementSource(this.player);
-		this.source.connect(this.analyser);
 		console.log(this.source);
 		this.source.connect(this.audioContext.destination);
-		// this.rafId = requestAnimationFrame(this.tick);
-
+	}
 
 		// this.player.onloadedmetadata = () => {
 		// 	const fullwave = document.getElementById('fullwave');
@@ -99,13 +91,7 @@ class Player extends Component {
 		// }
 
 
-	}
 
-	tick() {
-		this.analyser.getByteTimeDomainData(this.dataArray);
-		this.setState({ audioData: this.dataArray });
-		this.rafId = requestAnimationFrame(this.tick);
-	}
 
 	// draw() {
 	// 	const canvas = this.canvas.current;
@@ -129,12 +115,6 @@ class Player extends Component {
 	// }
 
 
-	componentWillUnmount() {
-		this.player.removeEventListener("timeupdate", ()=> {});
-		cancelAnimationFrame(this.rafId);
-		this.analyser.disconnect();
-		this.source.disconnect();
-	}
 
 	componentDidUpdate(prevProps, prevState) {
 		if (this.state.selectedTrack !== prevState.selectedTrack) {
@@ -168,6 +148,10 @@ class Player extends Component {
 			}
 		}
 		// this.draw();
+	}
+
+	componentWillUnmount() {
+		this.player.removeEventListener("timeupdate", ()=> {});
 	}
 
 	render() {
@@ -232,7 +216,8 @@ class Player extends Component {
 
 				<div className='waveform'>
 					{/* <canvas id='fullwave' ref={this.full} /> */}
-					<canvas ref={this.canvas} />
+					{this.state.player === 'playing' && <AudioAnalyser context={this.audioContext} source={this.source} /> }
+					
 				</div>
 
 				<audio ref={ref => this.player = ref} />
