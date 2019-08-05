@@ -28,6 +28,19 @@ class Player extends Component {
 				duration: e.target.duration
 			});
 		});
+
+		this.player.onloadstart = () => {
+			console.log('loadstart');
+		}
+		this.player.ondurationchange = () => {
+			console.log('durationchange');
+		}
+		this.player.onloadedmetadata = () => {
+			console.log('onloadedmetadata');
+		}
+		this.player.oncanplay = () => {
+			console.log('canplay');
+		}
 		// audio analyser
 		this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
 		this.analyser = this.audioContext.createAnalyser();
@@ -42,7 +55,7 @@ class Player extends Component {
 		// //this.canvasCtx = this.canvas.getContext('2d');
 		console.log(this.player);
 		this.source = this.audioContext.createMediaElementSource(this.player);
-		// this.source.connect(this.analyser);
+		this.source.connect(this.analyser);
 		console.log(this.source);
 		this.source.connect(this.audioContext.destination);
 		// this.rafId = requestAnimationFrame(this.tick);
@@ -153,7 +166,7 @@ class Player extends Component {
 				<h1
 					className="song-title"
 					key={item.id}
-					onClick={() => this.setState({ selectedTrack: item.title})}
+					onClick={() => this.setState({ selectedTrack: item.title })}
 				>
 				{item.title}
 				</h1>
