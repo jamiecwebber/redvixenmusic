@@ -13,7 +13,7 @@ class Player extends Component {
 			player: "stopped",
 			audioData: new Uint8Array(0)
 		}
-		// this.canvas = React.createRef();
+		this.canvas = React.createRef();
 		// this.full = React.createRef();
 		this.tick = this.tick.bind(this);
 	}
@@ -58,9 +58,9 @@ class Player extends Component {
 		console.log("bufferLength = " + this.bufferLength);
 		this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
 		console.log("dataArray length 256 = " + this.dataArray.length);
-		// this.analyser.getByteTimeDomainData(this.dataArray);
-		// //this.canvas = document.getElementById('visualizer');
-		// //this.canvasCtx = this.canvas.getContext('2d');
+		this.analyser.getByteTimeDomainData(this.dataArray);
+		// this.canvas = document.getElementById('visualizer');
+		// this.canvasCtx = this.canvas.getContext('2d');
 		console.log(this.player);
 		this.source = this.audioContext.createMediaElementSource(this.player);
 		this.source.connect(this.analyser);
@@ -230,7 +230,7 @@ class Player extends Component {
 
 				<div className='waveform'>
 					{/* <canvas id='fullwave' ref={this.full} /> */}
-					<canvas id='visualizer' ref={this.canvas} />
+					<canvas ref={this.canvas} />
 				</div>
 
 				<audio ref={ref => this.player = ref} />
