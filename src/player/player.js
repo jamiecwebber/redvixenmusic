@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faStop, faPause, faForward, faBackward } from '@fortawesome/free-solid-svg-icons'
 import './player.scss'
-import eclair from './audio/eclairdelune.wav'
+import eclair from '../audio/eclairdelune.wav'
 
 class Player extends Component {
 	constructor() {
@@ -28,6 +28,8 @@ class Player extends Component {
 				duration: e.target.duration
 			});
 		});
+
+		// event listeners for debugging
 		window.onload = () => {
 			console.log('window onload');
 		}
@@ -159,7 +161,7 @@ class Player extends Component {
 				this.player.currentTime = 0;
 			} else if (
 				this.state.player === 'playing' &&
-				prevState.player === 'paused' || prevState.player === 'stopped'
+				(prevState.player === 'paused' || prevState.player === 'stopped')
 			) {
 				console.log('play');
 				this.player.play();

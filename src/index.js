@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Header from './header'
 import AppRouter from './router'
-import Player from './player'
+import Player from './player/player'
 import './index.scss'
 
 
