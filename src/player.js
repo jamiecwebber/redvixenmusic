@@ -28,7 +28,13 @@ class Player extends Component {
 				duration: e.target.duration
 			});
 		});
+		window.onload = () => {
+			console.log('window onload');
+		}
 
+		this.player.oncanplay = () => {
+			console.log('canplay');
+		}
 		this.player.onloadstart = () => {
 			console.log('loadstart');
 		}
@@ -38,9 +44,11 @@ class Player extends Component {
 		this.player.onloadedmetadata = () => {
 			console.log('onloadedmetadata');
 		}
-		this.player.oncanplay = () => {
-			console.log('canplay');
+		
+		this.player.oncanplaythrough = () => {
+			console.log('canplaythrough');
 		}
+		
 		// audio analyser
 		this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
 		this.analyser = this.audioContext.createAnalyser();
