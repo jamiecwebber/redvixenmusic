@@ -29,8 +29,15 @@ class Player extends Component {
 			}
 			console.log(response);
 			return response.arrayBuffer();
-		})
-		
+		})	
+	}
+
+	decodeBuffer(buffer) {
+		{
+			return this.audioContext.decodeAudioData(buffer, (decodedData) => {
+				this.bufferSource.buffer = decodedData;
+			})
+		}
 	}
 
 	drawWave() {
@@ -76,24 +83,18 @@ class Player extends Component {
 
 		// creating fetch request to get audio data
 		this.getAudioData(eclair)
-			.then((buffer) => {
-
-				return this.audioContext.decodeAudioData(buffer, (decodedData) => {
-					
-					this.bufferSource.buffer = decodedData;
-					var max = this.bufferSource.buffer.getChannelData(0).reduce((a,b) => {
-						return Math.max(a, b);
-					})
-					this.setState({ arrayMax: max });
-					console.log(this.state.arrayMax);
-					this.bufferSource.connect(this.audioContext.destination);
-					console.log(this.bufferSource);
-				})
-			})
+			.then(buffer => this.decodeBuffer(buffer))
 			.then(() => {
 				console.log(this.bufferSource.buffer);
 				//this.bufferSource.start(0);
 				//this.state.player = 'playing';
+				var max = this.bufferSource.buffer.getChannelData(0).reduce((a,b) => {
+					return Math.max(a, b);
+				})
+				this.setState({ arrayMax: max });
+				console.log(this.state.arrayMax);
+				this.bufferSource.connect(this.audioContext.destination);
+				console.log(this.bufferSource);
 				
 			})
 
