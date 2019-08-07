@@ -29,6 +29,13 @@ class Player extends Component {
 			console.log(response);
 			return response.arrayBuffer();
 		})
+		.then((buffer) => {
+			this.audioContext.decodeAudioData(buffer, (decodedData) => {
+				this.bufferSource.buffer = decodedData;
+				this.bufferSource.connect(this.audioContext.destination);
+				console.log(this.bufferSource);
+			})
+		})
 	}
 
 	componentDidMount() {
