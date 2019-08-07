@@ -40,6 +40,13 @@ class Player extends Component {
 		}
 	}
 
+	getMax(buffer) {
+		var max = buffer.getChannelData(0).reduce((a,b) => {
+			return Math.max(a, b);
+		})
+		return max;
+	}
+
 	drawWave() {
 
 	}
@@ -88,10 +95,9 @@ class Player extends Component {
 				console.log(this.bufferSource.buffer);
 				//this.bufferSource.start(0);
 				//this.state.player = 'playing';
-				var max = this.bufferSource.buffer.getChannelData(0).reduce((a,b) => {
-					return Math.max(a, b);
-				})
-				this.setState({ arrayMax: max });
+				
+				this.setState({ arrayMax: this.getMax(this.bufferSource.buffer) });
+				
 				console.log(this.state.arrayMax);
 				this.bufferSource.connect(this.audioContext.destination);
 				console.log(this.bufferSource);
