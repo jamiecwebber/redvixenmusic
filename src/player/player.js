@@ -26,7 +26,7 @@ class Player extends Component {
 			if (!response.ok) {
 				throw new Error("HTTP error, status = " + response.status);
 			}
-			console.log("no error on fetch");
+			console.log(response);
 			return response.arrayBuffer();
 		})
 	}
