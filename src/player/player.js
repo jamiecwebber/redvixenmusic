@@ -63,59 +63,6 @@ class Player extends Component {
 		this.source.connect(this.audioContext.destination);
 	}
 
-		// this.player.onloadedmetadata = () => {
-		// 	const fullwave = document.getElementById('fullwave');
-		// 	const height = fullwave.height;
-		// 	const width = fullwave.width;
-		// 	const context = fullwave.getContext('2d');
-		// 	const sliceWidth = (width)/(this.player.duration / 0.1);
-		// 	context.linewitdh = 2;
-		// 	context.strokeStyle = '#000000';
-		// 	context.clearRect(0,0,width,height);
-		// 	context.beginPath();
-		// 	let x = 0;
-		// 	context.moveTo(x,height/2);
-
-		// 	while (this.player.currentTime < this.player.duration) {
-		// 		x += sliceWidth;
-		// 		this.player.currentTime += 0.1;
-		// 		this.analyser.getByteTimeDomainData(this.dataArray);
-		// 		this.setState({ audioData: this.dataArray });
-		// 		const y = (this.state.audioData[0] / 255.0) * height;
-		// 		context.lineTo(x,y);
-		// 	}
-		// 	context.lineTo(x, height/2);
-		// 	context.stroke();
-		// 	this.player.currentTime = 0;
-
-		// }
-
-
-
-
-	// draw() {
-	// 	const canvas = this.canvas.current;
-	// 	const height = canvas.height;
-	// 	const width = canvas.width;
-	// 	const context = canvas.getContext('2d');
-	// 	let x = 0;
-	// 	const sliceWidth = (width + 1.0)/ this.state.audioData.length;
-	// 	context.lineWidth = 5;
-	// 	context.strokeStyle = '#000000';
-	// 	context.clearRect(0,0,width,height);
-	// 	context.beginPath();
-	// 	context.moveTo(0,height/2);
-	// 	for (const item of this.state.audioData) {
-	// 		const y = (item / 255.0) * height;
-	// 		context.lineTo(x,y);
-	// 		x += sliceWidth;
-	// 	}
-	// 	context.lineTo(x, height/2);
-	// 	context.stroke();
-	// }
-
-
-
 	componentDidUpdate(prevProps, prevState) {
 		if (this.state.selectedTrack !== prevState.selectedTrack) {
 			let track;
