@@ -12,7 +12,8 @@ class Player extends Component {
 		this.state = {
 			selectedTrack: "Éclair de lune",
 			player: "stopped",
-			audioData: new Uint8Array(0)
+			audioData: new Uint8Array(0),
+			arrayMax: 1
 		}
 		this.canvas = React.createRef();
 		// this.full = React.createRef();
@@ -37,7 +38,8 @@ class Player extends Component {
 				var max = this.bufferSource.buffer.getChannelData(0).reduce((a,b) => {
 					return Math.max(a, b);
 				})
-				console.log(max)
+				this.setState({ arrayMax: max });
+				console.log(this.state.arrayMax);
 				this.bufferSource.connect(this.audioContext.destination);
 				console.log(this.bufferSource);
 			})
@@ -206,7 +208,7 @@ class Player extends Component {
 
 				<div className='waveform'>
 					{/* <canvas id='fullwave' ref={this.full} /> */}
-					{this.state.player === 'playing' && <AudioAnalyser context={this.audioContext} source={this.bufferSource} /> }
+					{this.state.player === 'playing' && <AudioAnalyser context={this.audioContext} source={this.bufferSource} max={this.state.arrayMax}/> }
 					
 				</div>
 

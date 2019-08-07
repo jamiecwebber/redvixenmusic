@@ -30,6 +30,8 @@ class AudioAnalyser extends Component {
 	tick() {
 		this.analyser.getByteTimeDomainData(this.dataArray);
 		this.setState({ audioData: this.dataArray });
+
+		console.log(Math.max(...this.state.audioData))
 		this.rafId = requestAnimationFrame(this.tick);
 	}
 

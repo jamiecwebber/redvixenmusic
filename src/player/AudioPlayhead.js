@@ -17,6 +17,7 @@ class AudioPlayhead extends Component {
 
 	draw() {
 		const { audioData } = this.props;
+		console.log(Math.max(...audioData))
 		const canvas = this.canvas.current;
 		const height = canvas.height;
 		const width = canvas.width;
