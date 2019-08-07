@@ -88,7 +88,7 @@ class Player extends Component {
 		console.log( width);
 		const context = canvas.getContext('2d');
 		let x = 0;
-		let pixelWidth = this.state.waveformArray.length / width;
+		let pixelWidth = this.state.waveformArray.length / (width * 3);
 		console.log("pixelWidth = " + pixelWidth);
 		let drawArray = this.chunk(this.state.waveformArray, pixelWidth)
 		drawArray = drawArray.map(i => this.getMax(i));
@@ -100,7 +100,7 @@ class Player extends Component {
 		for (const item of drawArray) {
 			const y = (item*height + height)/2;
 			context.lineTo(x,y);
-			x += 1;
+			x += 0.3333;
 		}
 		context.lineTo(x, height/2);
 		context.stroke();
