@@ -22,7 +22,10 @@ class AudioAnalyser extends Component {
 		this.analyser.getByteTimeDomainData(this.dataArray);
 		// this.canvas = document.getElementById('visualizer');
 		// this.canvasCtx = this.canvas.getContext('2d');
-		this.props.source.connect(this.analyser);
+		this.gain = this.props.context.createGain();
+		this.gain.gain.setValueAtTime((1/this.props.max), this.props.context.currentTime);
+		this.props.source.connect(this.gain);
+		this.gain.connect(this.analyser);
 		console.log(this.props.source);
 		this.rafId = requestAnimationFrame(this.tick);
 	}

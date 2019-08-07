@@ -90,7 +90,7 @@ class Player extends Component {
 		// creating fetch request to get audio data
 		this.getAudioData(eclair)
 			.then(() => {
-				//this.bufferSource.start(0);
+				this.bufferSource.start(0);
 				this.state.player = 'playing';
 				
 			})
