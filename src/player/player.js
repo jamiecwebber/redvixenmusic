@@ -18,7 +18,18 @@ class Player extends Component {
 		// this.full = React.createRef();
 	}
 
+	getAudioData(url) {
+		this.bufferSource = this.audioContext.createBufferSource();
 
+		return fetch(url)
+		.then((response) => {
+			if (!response.ok) {
+				throw new Error("HTTP error, status = " + response.status);
+			}
+			console.log("no error on fetch");
+			return response.arrayBuffer();
+		})
+	}
 
 	componentDidMount() {
 		this.player.src = eclair;
@@ -58,6 +69,20 @@ class Player extends Component {
 		// this.canvas = document.getElementById('visualizer');
 		// this.canvasCtx = this.canvas.getContext('2d');
 		console.log(this.player);
+
+
+
+		// creating fetch request to get audio data
+		this.getAudioData(eclair);
+
+
+
+
+
+
+
+
+
 		this.source = this.audioContext.createMediaElementSource(this.player);
 		console.log(this.source);
 		this.source.connect(this.audioContext.destination);
