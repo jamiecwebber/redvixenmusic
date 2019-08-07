@@ -69,7 +69,10 @@ class Player extends Component {
 		// should reduce the full buffer to a more sensible size for visualization
 		// reduce to 20 samples per second (just to try)
 		const waveformArray = this.chunk(buffer, 2205).map(s => this.getMax(s));
-		console.log(waveformArray.length);
+		this.setState({ waveformArray: waveformArray })
+		console.log(this.state.waveformArray.length);
+
+		// Draw the waveform
 
 		// TODO: adapt to changing screen size... don't recalculate array every time.
 	}
