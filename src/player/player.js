@@ -42,8 +42,11 @@ class Player extends Component {
 	}
 
 	getMax(buffer) {
+		// only returns positive numbers!!
+
 		var max = buffer.reduce((a,b) => {
-			return Math.max(a, b);
+			const c = Math.max(Math.abs(a), Math.abs(b));
+			return (c === Math.abs(a)) ? a : b;
 		})
 		return max;
 	}
