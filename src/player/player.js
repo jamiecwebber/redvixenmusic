@@ -16,7 +16,7 @@ class Player extends Component {
 			waveformArray: [],
 			arrayMax: 1
 		}
-		this.canvas = React.createRef();
+		this.full = React.createRef();
 		// this.full = React.createRef();
 	}
 
@@ -59,11 +59,9 @@ class Player extends Component {
 		var chunks = [];
 		var i = 0;
 		var n = arr.length;
-
 		while (i < n) {
 			chunks.push(arr.slice(i, i += len));
 		}
-
 		return chunks;
 	}
 
@@ -71,7 +69,7 @@ class Player extends Component {
 		// should reduce the full buffer to a more sensible size for visualization
 		// reduce to 20 samples per second (just to try)
 		const waveformArray = this.chunk(buffer, 2205).map(s => this.getMax(s));
-		console.log(waveformArray);
+		console.log(waveformArray.length);
 
 		// TODO: adapt to changing screen size... don't recalculate array every time.
 	}
@@ -234,7 +232,7 @@ class Player extends Component {
 				<div className='waveform'>
 					{/* <canvas id='fullwave' ref={this.full} /> */}
 					{/* this.state.player === 'playing' && <AudioAnalyser context={this.audioContext} source={this.bufferSource} max={this.state.arrayMax}/> */}
-					
+					<canvas style={{border:'2px solid orange', height:'100%', width:'100%'}} ref={this.full}/>
 				</div>
 
 				<audio ref={ref => this.player = ref} />
