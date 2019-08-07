@@ -92,7 +92,7 @@ class Player extends Component {
 		console.log("pixelWidth = " + pixelWidth);
 		let drawArray = this.chunk(this.state.waveformArray, pixelWidth)
 		drawArray = drawArray.map(i => this.getMax(i));
-		context.lineWidth = 5;
+		context.lineWidth = 1;
 		context.strokeStyle = '#000000';
 		context.clearRect(0,0,width,height);
 		context.beginPath();
