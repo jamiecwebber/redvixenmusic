@@ -30,20 +30,11 @@ class Player extends Component {
 			console.log(response);
 			return response.arrayBuffer();
 		})
-		.then((buffer) => {
+		
+	}
 
-			this.audioContext.decodeAudioData(buffer, (decodedData) => {
-				
-				this.bufferSource.buffer = decodedData;
-				var max = this.bufferSource.buffer.getChannelData(0).reduce((a,b) => {
-					return Math.max(a, b);
-				})
-				this.setState({ arrayMax: max });
-				console.log(this.state.arrayMax);
-				this.bufferSource.connect(this.audioContext.destination);
-				console.log(this.bufferSource);
-			})
-		})
+	drawWave() {
+
 	}
 
 	componentDidMount() {
@@ -59,7 +50,6 @@ class Player extends Component {
 		window.onload = () => {
 			console.log('window onload');
 		}
-
 		this.player.oncanplay = () => {
 			console.log('canplay');
 		}
@@ -72,12 +62,9 @@ class Player extends Component {
 		this.player.onloadedmetadata = () => {
 			console.log('onloadedmetadata');
 		}
-		
 		this.player.oncanplaythrough = () => {
 			console.log('canplaythrough');
 		}
-
-		console.log('analyser loaded');
 		// audio analyser
 		this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
 		
@@ -89,9 +76,24 @@ class Player extends Component {
 
 		// creating fetch request to get audio data
 		this.getAudioData(eclair)
+			.then((buffer) => {
+
+				return this.audioContext.decodeAudioData(buffer, (decodedData) => {
+					
+					this.bufferSource.buffer = decodedData;
+					var max = this.bufferSource.buffer.getChannelData(0).reduce((a,b) => {
+						return Math.max(a, b);
+					})
+					this.setState({ arrayMax: max });
+					console.log(this.state.arrayMax);
+					this.bufferSource.connect(this.audioContext.destination);
+					console.log(this.bufferSource);
+				})
+			})
 			.then(() => {
-				this.bufferSource.start(0);
-				this.state.player = 'playing';
+				console.log(this.bufferSource.buffer);
+				//this.bufferSource.start(0);
+				//this.state.player = 'playing';
 				
 			})
 
@@ -208,7 +210,7 @@ class Player extends Component {
 
 				<div className='waveform'>
 					{/* <canvas id='fullwave' ref={this.full} /> */}
-					{this.state.player === 'playing' && <AudioAnalyser context={this.audioContext} source={this.bufferSource} max={this.state.arrayMax}/> }
+					{/* this.state.player === 'playing' && <AudioAnalyser context={this.audioContext} source={this.bufferSource} max={this.state.arrayMax}/> */}
 					
 				</div>
 
