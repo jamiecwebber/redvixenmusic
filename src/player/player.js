@@ -6,6 +6,9 @@ import './player.scss'
 import AudioAnalyser from './AudioAnalyser'
 import eclair from '../audio/eclairdelune.wav'
 
+
+// user26 !!!
+
 class Player extends Component {
 	constructor() {
 		super();
@@ -65,7 +68,7 @@ class Player extends Component {
 		return chunks;
 	}
 
-	drawWave(buffer) {
+	getWave(buffer) {
 		// should reduce the full buffer to a more sensible size for visualization
 		// reduce to 20 samples per second (just to try)
 		const waveformArray = this.chunk(buffer, 2205).map(s => this.getMax(s));
@@ -75,6 +78,27 @@ class Player extends Component {
 		// Draw the waveform
 
 		// TODO: adapt to changing screen size... don't recalculate array every time.
+	}
+
+	drawWave() {
+		const canvas = this.full.current;
+		const height = canvas.height;
+		const width = canvas.width;
+		const context = canvas.getContext('2d');
+		let x = 0;
+		const sliceWidth = (width + 1.0)/ this.state.waveformArray.length;
+		context.lineWidth = 5;
+		context.strokeStyle = '#000000';
+		context.clearRect(0,0,width,height);
+		context.beginPath();
+		context.moveTo(0,height/2);
+		for (const item of this.state.waveformArray) {
+			const y = (item*height + height)/2;
+			context.lineTo(x,y);
+			x += sliceWidth;
+		}
+		context.lineTo(x, height/2);
+		context.stroke();
 	}
 
 	componentDidMount() {
@@ -119,10 +143,11 @@ class Player extends Component {
 				console.log(this.bufferSource.buffer);
 				//this.bufferSource.start(0);
 				//this.state.player = 'playing';
-
-				this.drawWave(this.bufferSource.buffer.getChannelData(0));
-				
 				this.setState({ arrayMax: this.getMax(this.bufferSource.buffer.getChannelData(0)) });
+				this.getWave(this.bufferSource.buffer.getChannelData(0));
+				this.drawWave();
+				
+				
 				
 				console.log(this.state.arrayMax);
 				this.bufferSource.connect(this.audioContext.destination);
