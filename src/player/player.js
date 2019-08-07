@@ -13,6 +13,7 @@ class Player extends Component {
 			selectedTrack: "Éclair de lune",
 			player: "stopped",
 			audioData: new Uint8Array(0),
+			waveformArray: [],
 			arrayMax: 1
 		}
 		this.canvas = React.createRef();
@@ -41,7 +42,7 @@ class Player extends Component {
 	}
 
 	getMax(buffer) {
-		var max = buffer.getChannelData(0).reduce((a,b) => {
+		var max = buffer.reduce((a,b) => {
 			return Math.max(a, b);
 		})
 		return max;
@@ -51,10 +52,23 @@ class Player extends Component {
 
 	}
 
+	chunk(arr, len) {
+		var chunks = [];
+		var i = 0;
+		var n = arr.length;
+
+		while (i < n) {
+			chunks.push(arr.slice(i, i += len));
+		}
+
+		return chunks;
+	}
+
 	drawWave(buffer) {
 		// should reduce the full buffer to a more sensible size for visualization
-		// reduce to 10 samples per second (just to try)
-
+		// reduce to 20 samples per second (just to try)
+		const waveformArray = this.chunk(buffer, 2205).map(s => this.getMax(s));
+		console.log(waveformArray);
 
 		// TODO: adapt to changing screen size... don't recalculate array every time.
 	}
@@ -101,8 +115,10 @@ class Player extends Component {
 				console.log(this.bufferSource.buffer);
 				//this.bufferSource.start(0);
 				//this.state.player = 'playing';
+
+				this.drawWave(this.bufferSource.buffer.getChannelData(0));
 				
-				this.setState({ arrayMax: this.getMax(this.bufferSource.buffer) });
+				this.setState({ arrayMax: this.getMax(this.bufferSource.buffer.getChannelData(0)) });
 				
 				console.log(this.state.arrayMax);
 				this.bufferSource.connect(this.audioContext.destination);
