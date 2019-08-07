@@ -32,9 +32,9 @@ class Player extends Component {
 		})	
 	}
 
-	decodeBuffer(buffer) {
+	decodeBuffer(bufferSource) {
 		{
-			return this.audioContext.decodeAudioData(buffer, (decodedData) => {
+			return this.audioContext.decodeAudioData(bufferSource, (decodedData) => {
 				this.bufferSource.buffer = decodedData;
 			})
 		}
@@ -47,8 +47,16 @@ class Player extends Component {
 		return max;
 	}
 
-	drawWave() {
+	normalize() {
 
+	}
+
+	drawWave(buffer) {
+		// should reduce the full buffer to a more sensible size for visualization
+		// reduce to 10 samples per second (just to try)
+
+
+		// TODO: adapt to changing screen size... don't recalculate array every time.
 	}
 
 	componentDidMount() {
@@ -86,11 +94,9 @@ class Player extends Component {
 		// this.canvasCtx = this.canvas.getContext('2d');
 		console.log(this.player);
 
-
-
 		// creating fetch request to get audio data
 		this.getAudioData(eclair)
-			.then(buffer => this.decodeBuffer(buffer))
+			.then(bufferSource => this.decodeBuffer(bufferSource))
 			.then(() => {
 				console.log(this.bufferSource.buffer);
 				//this.bufferSource.start(0);
@@ -100,17 +106,8 @@ class Player extends Component {
 				
 				console.log(this.state.arrayMax);
 				this.bufferSource.connect(this.audioContext.destination);
-				console.log(this.bufferSource);
 				
 			})
-
-
-
-
-
-
-
-
 
 		this.source = this.audioContext.createMediaElementSource(this.player);
 		console.log(this.source);
