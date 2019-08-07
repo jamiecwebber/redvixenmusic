@@ -34,7 +34,10 @@ class Player extends Component {
 			this.audioContext.decodeAudioData(buffer, (decodedData) => {
 				
 				this.bufferSource.buffer = decodedData;
-				console.log(this.bufferSource.buffer.getChannelData(0))
+				var max = this.bufferSource.buffer.getChannelData(0).reduce((a,b) => {
+					return Math.max(a, b);
+				})
+				console.log(max)
 				this.bufferSource.connect(this.audioContext.destination);
 				console.log(this.bufferSource);
 			})
