@@ -30,8 +30,11 @@ class Player extends Component {
 			return response.arrayBuffer();
 		})
 		.then((buffer) => {
+
 			this.audioContext.decodeAudioData(buffer, (decodedData) => {
+				
 				this.bufferSource.buffer = decodedData;
+				console.log(this.bufferSource.buffer.getChannelData(0))
 				this.bufferSource.connect(this.audioContext.destination);
 				console.log(this.bufferSource);
 			})
@@ -84,7 +87,7 @@ class Player extends Component {
 			.then(() => {
 				//this.bufferSource.start(0);
 				this.state.player = 'playing';
-				console.log()
+				
 			})
 
 
