@@ -83,6 +83,8 @@ class Player extends Component {
 		this.getAudioData(eclair)
 			.then(() => {
 				//this.bufferSource.start(0);
+				this.state.player = 'playing';
+				console.log()
 			})
 
 
@@ -198,7 +200,7 @@ class Player extends Component {
 
 				<div className='waveform'>
 					{/* <canvas id='fullwave' ref={this.full} /> */}
-					{this.state.player === 'playing' && <AudioAnalyser context={this.audioContext} source={this.source} /> }
+					{this.state.player === 'playing' && <AudioAnalyser context={this.audioContext} source={this.bufferSource} /> }
 					
 				</div>
 
@@ -213,3 +215,4 @@ export default Player
 // thanks to
 // https://dev.to/ma5ly/lets-make-a-little-audio-player-in-react-p4p
 // https://www.twilio.com/blog/audio-visualisation-web-audio-api--react
+// https://mdn.github.io/fetch-examples/fetch-array-buffer/
