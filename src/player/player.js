@@ -70,8 +70,8 @@ class Player extends Component {
 
 	getWave(buffer) {
 		// should reduce the full buffer to a more sensible size for visualization
-		// reduce to 20 samples per second (just to try)
-		let waveformArray = this.chunk(buffer, 2205).map(s => this.getMax(s));
+		// reduce to 20 samples per second (just to try) .. ! way too wide grain
+		let waveformArray = this.chunk(buffer, 20).map(s => this.getMax(s));
 		waveformArray = waveformArray.map(sample => sample/this.state.arrayMax);
 		this.setState({ waveformArray: waveformArray })
 		console.log(this.state.waveformArray.length);
@@ -88,19 +88,21 @@ class Player extends Component {
 		console.log( width);
 		const context = canvas.getContext('2d');
 		let x = 0;
-		let pixelWidth = this.state.waveformArray.length / (width * 3);
+		let grain = 20
+		let pixelWidth = this.state.waveformArray.length / (width * grain);
 		console.log("pixelWidth = " + pixelWidth);
 		let drawArray = this.chunk(this.state.waveformArray, pixelWidth)
 		drawArray = drawArray.map(i => this.getMax(i));
 		context.lineWidth = 1;
-		context.strokeStyle = '#000000';
+		context.strokeStyle = 'rgba(0,0,0,1);'
+		context.fillStyle = 'rgba(0,0,0,1);'
 		context.clearRect(0,0,width,height);
 		context.beginPath();
 		context.moveTo(0,height/2);
 		for (const item of drawArray) {
 			const y = (item*height + height)/2;
 			context.lineTo(x,y);
-			x += 0.3333;
+			x += (1./grain);
 		}
 		context.lineTo(x, height/2);
 		context.stroke();
