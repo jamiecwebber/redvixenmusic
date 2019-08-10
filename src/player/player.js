@@ -83,12 +83,21 @@ class Player extends Component {
 
 	drawWave() {
 		const canvas = this.full.current;
-		const height = canvas.height;
-		const width = canvas.width;
-		console.log( width);
+
+		let dpi = window.devicePixelRatio;
+		console.log("dpi = " + dpi)
+
 		const context = canvas.getContext('2d');
+
+		const height = +getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
+		const width = +getComputedStyle(canvas).getPropertyValue("width").slice(0, -2);
+
+		canvas.setAttribute('height', height * dpi);
+		canvas.setAttribute('width', width * dpi);
+
+
 		let x = 0;
-		let grain = 20
+		let grain = 220;
 		let pixelWidth = this.state.waveformArray.length / (width * grain);
 		console.log("pixelWidth = " + pixelWidth);
 		let drawArray = this.chunk(this.state.waveformArray, pixelWidth)
@@ -282,3 +291,4 @@ export default Player
 // https://dev.to/ma5ly/lets-make-a-little-audio-player-in-react-p4p
 // https://www.twilio.com/blog/audio-visualisation-web-audio-api--react
 // https://mdn.github.io/fetch-examples/fetch-array-buffer/
+// https://medium.com/wdstack/fixing-html5-2d-canvas-blur-8ebe27db07da
