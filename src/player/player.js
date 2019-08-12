@@ -98,11 +98,11 @@ class Player extends Component {
 
 		let x = 0;
 		//
-		let grain = 5000;
-		let pixelWidth = this.state.waveformArray.length / (width * grain);
+		let grain = 60;
+		let pixelWidth = (width * grain) / this.state.waveformArray.length  ;
 		console.log("pixelWidth = " + pixelWidth);
 		
-		let drawArray = this.chunk(this.state.waveformArray, pixelWidth)
+		let drawArray = this.chunk(this.state.waveformArray, grain)
 		drawArray = drawArray.map(i => this.getMax(i));
 		context.lineWidth = 1;
 		context.strokeStyle = 'rgba(0,0,0,1);'
@@ -113,7 +113,7 @@ class Player extends Component {
 		for (const item of drawArray) {
 			const y = (item*height + height)/2;
 			context.lineTo(x,y);
-			x += (1./grain);
+			x += pixelWidth;
 		}
 		context.lineTo(x, height/2);
 		context.stroke();
