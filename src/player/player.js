@@ -5,6 +5,7 @@ import { faPlay, faStop, faPause, faForward, faBackward } from '@fortawesome/fre
 import './player.scss'
 import AudioAnalyser from './AudioAnalyser'
 import eclair from '../audio/eclairdelune.wav'
+import duet from '../audio/duet.mp3'
 
 
 // user26 !!!
@@ -71,7 +72,7 @@ class Player extends Component {
 	getWave(buffer) {
 		// should reduce the full buffer to a more sensible size for visualization
 		// reduce to 20 samples per second (just to try) .. ! way too wide grain
-		let waveformArray = this.chunk(buffer, 20).map(s => this.getMax(s));
+		let waveformArray = this.chunk(buffer, 2).map(s => this.getMax(s));
 		waveformArray = waveformArray.map(sample => sample/this.state.arrayMax);
 		this.setState({ waveformArray: waveformArray })
 		console.log(this.state.waveformArray.length);
@@ -98,7 +99,7 @@ class Player extends Component {
 
 		let x = 0;
 		//
-		let grain = 60;
+		let grain = 50;
 		let pixelWidth = (width * grain) / this.state.waveformArray.length  ;
 		console.log("pixelWidth = " + pixelWidth);
 		
@@ -120,33 +121,34 @@ class Player extends Component {
 	}
 
 	componentDidMount() {
-		this.player.src = eclair;
-		this.player.addEventListener("timeupdate", e => {
-			this.setState({
-				currentTime: e.target.currentTime,
-				duration: e.target.duration
-			});
-		});
+		//this.player.src = duet;
+		// timing needs to change with change to web api
+		//this.player.addEventListener("timeupdate", e => {
+		//	this.setState({
+		//		currentTime: e.target.currentTime,
+		//		duration: e.target.duration
+		//	});
+		//});
 
 		// event listeners for debugging
 		window.onload = () => {
 			console.log('window onload');
 		}
-		this.player.oncanplay = () => {
-			console.log('canplay');
-		}
-		this.player.onloadstart = () => {
-			console.log('loadstart');
-		}
-		this.player.ondurationchange = () => {
-			console.log('durationchange');
-		}
-		this.player.onloadedmetadata = () => {
-			console.log('onloadedmetadata');
-		}
-		this.player.oncanplaythrough = () => {
-			console.log('canplaythrough');
-		}
+		// this.player.oncanplay = () => {
+		// 	console.log('canplay');
+		// }
+		// this.player.onloadstart = () => {
+		// 	console.log('loadstart');
+		// }
+		// this.player.ondurationchange = () => {
+		// 	console.log('durationchange');
+		// }
+		// this.player.onloadedmetadata = () => {
+		// 	console.log('onloadedmetadata');
+		// }
+		// this.player.oncanplaythrough = () => {
+		// 	console.log('canplaythrough');
+		// }
 		// audio analyser
 		this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
 		
@@ -155,7 +157,7 @@ class Player extends Component {
 		console.log(this.player);
 
 		// creating fetch request to get audio data
-		this.getAudioData(eclair)
+		this.getAudioData(duet)
 			.then(bufferSource => this.decodeBuffer(bufferSource))
 			.then(() => {
 				console.log(this.bufferSource.buffer);
@@ -170,11 +172,12 @@ class Player extends Component {
 				console.log(this.state.arrayMax);
 				this.bufferSource.connect(this.audioContext.destination);
 				
+				
 			})
 
-		this.source = this.audioContext.createMediaElementSource(this.player);
-		console.log(this.source);
-		this.source.connect(this.audioContext.destination);
+		//this.source = this.audioContext.createMediaElementSource(this.player);
+		//console.log(this.source);
+		//this.source.connect(this.audioContext.destination);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -188,24 +191,26 @@ class Player extends Component {
 				break;
 			}
 			if(track) {
-				this.player.src = track;
-				this.player.play();
+				//this.player.src = track;
+				//this.player.play();
 				this.setState({player: 'playing'});
 			}
 		}
 		if (this.state.player !== prevState.player) {
 			// console.log(this.state.player);
 			if (this.state.player === 'paused') {
-				this.player.pause();
+				//this.player.pause();
 			} else if (this.state.player === 'stopped') {
-				this.player.pause();
-				this.player.currentTime = 0;
+				this.bufferSource.stop();
+				//this.player.pause();
+				//this.player.currentTime = 0;
 			} else if (
 				this.state.player === 'playing' &&
 				(prevState.player === 'paused' || prevState.player === 'stopped')
 			) {
 				console.log('play');
-				this.player.play();
+				this.bufferSource.start(0);
+				//this.player.play();
 			}
 		}
 		// this.draw();
@@ -281,7 +286,7 @@ class Player extends Component {
 					<canvas style={{border:'2px solid orange', height:'100%', width:'100%'}} ref={this.full}/>
 				</div>
 
-				<audio ref={ref => this.player = ref} />
+				{/*<audio ref={ref => this.player = ref} /> */}
 			</div>
 		);
 	}
