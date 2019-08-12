@@ -89,17 +89,19 @@ class Player extends Component {
 
 		const context = canvas.getContext('2d');
 
-		const height = +getComputedStyle(canvas).getPropertyValue("height").slice(0, -2);
-		const width = +getComputedStyle(canvas).getPropertyValue("width").slice(0, -2);
+		const height = +getComputedStyle(canvas).getPropertyValue("height").slice(0, -2) * dpi;
+		const width = +getComputedStyle(canvas).getPropertyValue("width").slice(0, -2) * dpi;
 
-		canvas.setAttribute('height', height * dpi);
-		canvas.setAttribute('width', width * dpi);
+		canvas.setAttribute('height', height);
+		canvas.setAttribute('width', width);
 
 
 		let x = 0;
-		let grain = 220;
+		//
+		let grain = 5000;
 		let pixelWidth = this.state.waveformArray.length / (width * grain);
 		console.log("pixelWidth = " + pixelWidth);
+		
 		let drawArray = this.chunk(this.state.waveformArray, pixelWidth)
 		drawArray = drawArray.map(i => this.getMax(i));
 		context.lineWidth = 1;
