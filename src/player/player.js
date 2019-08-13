@@ -17,7 +17,7 @@ class Player extends Component {
 			selectedTrack: "Éclair de lune",
 			player: "stopped",
 			audioData: new Uint8Array(0),
-			audioBufferSource: null;
+			audioBufferSource: null,
 			waveformArray: [],
 			arrayMax: 1
 		}
@@ -72,8 +72,9 @@ class Player extends Component {
 	getWave(buffer, n=10) {
 		// should reduce the full buffer to a more sensible size for visualization
 		// n is how much it downsamples by - by default downsamples by 10.
+		let waveformArray
 		if (n != 1) {
-			let waveformArray = this.chunk(buffer, n).map(s => this.getMax(s));
+			waveformArray = this.chunk(buffer, n).map(s => this.getMax(s));
 		} else waveformArray = buffer;
 		waveformArray = waveformArray.map(sample => sample/this.state.arrayMax);
 		this.setState({ waveformArray: waveformArray })
@@ -101,16 +102,19 @@ class Player extends Component {
 
 		let x = 0;
 		//
-		let grain = 50;
+		let grain = 200;
 		let pixelWidth = (width * grain) / this.state.waveformArray.length  ;
 		console.log("pixelWidth = " + pixelWidth);
 		
 		let drawArray = this.chunk(this.state.waveformArray, grain)
 		drawArray = drawArray.map(i => this.getMax(i));
+		console.log('AFTER draw array map')
 		context.lineWidth = 1;
 		context.strokeStyle = 'rgba(0,0,0,1);'
 		context.fillStyle = 'rgba(0,0,0,1);'
+		console.log('before clearrect');
 		context.clearRect(0,0,width,height);
+		console.log('after clearrect');
 		context.beginPath();
 		context.moveTo(0,height/2);
 		for (const item of drawArray) {
@@ -119,6 +123,7 @@ class Player extends Component {
 			x += pixelWidth;
 		}
 		context.lineTo(x, height/2);
+		console.log('before stroke');
 		context.stroke();
 	}
 
@@ -161,15 +166,15 @@ class Player extends Component {
 		// creating fetch request to get audio data
 		this.getAudioData(duet)
 			.then(bufferSource => {
-				this.setState({audioBufferSource: bufferSource})
-				this.decodeBuffer(bufferSource)
+				this.setState({audioBufferSource: bufferSource});
+				return this.decodeBuffer(bufferSource);
 			})
 			.then(() => {
 				console.log(this.bufferSource.buffer);
 				//this.bufferSource.start(0);
 				//this.state.player = 'playing';
 				this.setState({ arrayMax: this.getMax(this.bufferSource.buffer.getChannelData(0)) });
-				this.getWave(this.bufferSource.buffer.getChannelData(0));
+				this.getWave(this.bufferSource.buffer.getChannelData(0), 1);
 				this.drawWave();
 				
 				
