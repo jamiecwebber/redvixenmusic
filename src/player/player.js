@@ -17,6 +17,7 @@ class Player extends Component {
 			selectedTrack: "Éclair de lune",
 			player: "stopped",
 			audioData: new Uint8Array(0),
+			audioBufferSource: null;
 			waveformArray: [],
 			arrayMax: 1
 		}
@@ -46,7 +47,6 @@ class Player extends Component {
 	}
 
 	getMax(buffer) {
-		// only returns positive numbers!!
 
 		var max = buffer.reduce((a,b) => {
 			const c = Math.max(Math.abs(a), Math.abs(b));
@@ -69,10 +69,12 @@ class Player extends Component {
 		return chunks;
 	}
 
-	getWave(buffer) {
+	getWave(buffer, n=10) {
 		// should reduce the full buffer to a more sensible size for visualization
-		// reduce to 20 samples per second (just to try) .. ! way too wide grain
-		let waveformArray = this.chunk(buffer, 2).map(s => this.getMax(s));
+		// n is how much it downsamples by - by default downsamples by 10.
+		if (n != 1) {
+			let waveformArray = this.chunk(buffer, n).map(s => this.getMax(s));
+		} else waveformArray = buffer;
 		waveformArray = waveformArray.map(sample => sample/this.state.arrayMax);
 		this.setState({ waveformArray: waveformArray })
 		console.log(this.state.waveformArray.length);
@@ -158,7 +160,10 @@ class Player extends Component {
 
 		// creating fetch request to get audio data
 		this.getAudioData(duet)
-			.then(bufferSource => this.decodeBuffer(bufferSource))
+			.then(bufferSource => {
+				this.setState({audioBufferSource: bufferSource})
+				this.decodeBuffer(bufferSource)
+			})
 			.then(() => {
 				console.log(this.bufferSource.buffer);
 				//this.bufferSource.start(0);
