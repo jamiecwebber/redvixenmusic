@@ -154,7 +154,7 @@ class Player extends Component {
 		
 		// this.canvas = document.getElementById('visualizer');
 		// this.canvasCtx = this.canvas.getContext('2d');
-		console.log(this.player);
+		//console.log(this.player);
 
 		// creating fetch request to get audio data
 		this.getAudioData(duet)
@@ -217,7 +217,7 @@ class Player extends Component {
 	}
 
 	componentWillUnmount() {
-		this.player.removeEventListener("timeupdate", ()=> {});
+		//this.player.removeEventListener("timeupdate", ()=> {});
 	}
 
 	render() {
