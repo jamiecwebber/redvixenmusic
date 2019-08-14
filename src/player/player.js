@@ -106,7 +106,7 @@ class Player extends Component {
 
 		let x = 0;
 		//
-		let grain = 5;
+		let grain = 15;
 		let pixelWidth = (width * grain) / this.state.waveformArray.length  ;
 		console.log("pixelWidth = " + pixelWidth);
 		
@@ -124,8 +124,9 @@ class Player extends Component {
 		context.moveTo(0,height/2);
 		let startIndex = 80000;
 		let waveformRange = 200;
-		let factor = 200;
-		pixelWidth = (width)/(drawArray.length + factor*waveformRange);
+		let yStretchFactor = 500;
+		let xStretchFactor = 6;
+		pixelWidth = (width)/(drawArray.length + yStretchFactor*waveformRange);
 		for (const item of drawArray.slice(0, startIndex-waveformRange)){
 			x += pixelWidth;
 			const y = (item*height + height)/2;
@@ -133,8 +134,8 @@ class Player extends Component {
 		}
 		let count = 0;
 		for (const item of drawArray.slice(startIndex-waveformRange,startIndex+waveformRange)) {
-			x += pixelWidth + (factor*pixelWidth)*(1-(Math.abs(count-waveformRange))/waveformRange);
-			const y = (Math.tanh(item*8)*height + height)/2;
+			x += pixelWidth + (yStretchFactor*pixelWidth)*(1-(Math.abs(count-waveformRange))/waveformRange);
+			const y = (Math.tanh(item + xStretchFactor*item*(1-(Math.abs(count-waveformRange))/waveformRange))*height + height)/2;
 			context.lineTo(x,y);
 			count += 1;
 		}
