@@ -106,7 +106,7 @@ class Player extends Component {
 
 		let x = 0;
 		//
-		let grain = 200;
+		let grain = 20;
 		let pixelWidth = (width * grain) / this.state.waveformArray.length  ;
 		console.log("pixelWidth = " + pixelWidth);
 		
@@ -121,7 +121,7 @@ class Player extends Component {
 		console.log('after clearrect');
 		context.beginPath();
 		context.moveTo(0,height/2);
-		for (const item of drawArray) {
+		for (const item of drawArray.slice(30000,60000)) {
 			const y = (item*height + height)/2;
 			context.lineTo(x,y);
 			x += pixelWidth;
