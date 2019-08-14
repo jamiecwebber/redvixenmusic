@@ -26,20 +26,21 @@ class Player extends Component {
 	}
 
 	getAudioData(url) {
-		this.bufferSource = this.audioContext.createBufferSource();
 
 		return fetch(url)
 		.then((response) => {
 			if (!response.ok) {
 				throw new Error("HTTP error, status = " + response.status);
 			}
-			console.log(response);
+			this.setState({audioBufferSource: response.clone().arrayBuffer()})
 			return response.arrayBuffer();
 		})	
 	}
 
 	decodeBuffer(bufferSource) {
 		{
+			this.bufferSource = this.audioContext.createBufferSource();
+			console.log(bufferSource);
 			return this.audioContext.decodeAudioData(bufferSource, (decodedData) => {
 				this.bufferSource.buffer = decodedData;
 			})
@@ -166,7 +167,6 @@ class Player extends Component {
 		// creating fetch request to get audio data
 		this.getAudioData(duet)
 			.then(bufferSource => {
-				this.setState({audioBufferSource: bufferSource});
 				return this.decodeBuffer(bufferSource);
 			})
 			.then(() => {
@@ -212,6 +212,13 @@ class Player extends Component {
 				//this.player.pause();
 			} else if (this.state.player === 'stopped') {
 				this.bufferSource.stop();
+				console.log(this.state.audioBufferSource);
+				
+				this.decodeBuffer(this.state.audioBufferSource)
+					.then(()=>{
+						console.log(this.bufferSource.buffer);
+					})
+					
 				//this.player.pause();
 				//this.player.currentTime = 0;
 			} else if (
