@@ -106,12 +106,13 @@ class Player extends Component {
 
 		let x = 0;
 		//
-		let grain = 1;
+		let grain = 5;
 		let pixelWidth = (width * grain) / this.state.waveformArray.length  ;
 		console.log("pixelWidth = " + pixelWidth);
 		
 		let drawArray = this.chunk(this.state.waveformArray, grain)
 		drawArray = drawArray.map(i => this.getMax(i));
+		console.log(drawArray.length)
 		console.log('AFTER draw array map')
 		context.lineWidth = 1;
 		context.strokeStyle = 'rgba(0,0,0,1);'
@@ -121,17 +122,20 @@ class Player extends Component {
 		console.log('after clearrect');
 		context.beginPath();
 		context.moveTo(0,height/2);
-		let startIndex = 810000;
-		let waveformRange = 30000;
-		pixelWidth = 2*width/waveformRange;
+		let startIndex = 40000;
+		let waveformRange = 2000;
+		pixelWidth = width/waveformRange;
 		let count = 0;
 		for (const item of drawArray.slice(startIndex-waveformRange,startIndex+waveformRange)) {
+
 			const y = (Math.tanh(item*4)*height + height)/2;
 			context.lineTo(x,y);
+			x += (pixelWidth)*(1-(Math.abs(count-waveformRange))/waveformRange);
 			
-			x += pixelWidth;
+			count += 1;
 		}
 		context.lineTo(x, height/2);
+		console.log(width);
 		console.log('before stroke');
 		context.stroke();
 	}
