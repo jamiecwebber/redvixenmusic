@@ -122,17 +122,26 @@ class Player extends Component {
 		console.log('after clearrect');
 		context.beginPath();
 		context.moveTo(0,height/2);
-		let startIndex = 40000;
-		let waveformRange = 2000;
-		pixelWidth = width/waveformRange;
+		let startIndex = 80000;
+		let waveformRange = 200;
+		let factor = 200;
+		pixelWidth = (width)/(drawArray.length + factor*waveformRange);
+		for (const item of drawArray.slice(0, startIndex-waveformRange)){
+			x += pixelWidth;
+			const y = (item*height + height)/2;
+			context.lineTo(x,y)
+		}
 		let count = 0;
 		for (const item of drawArray.slice(startIndex-waveformRange,startIndex+waveformRange)) {
-
-			const y = (Math.tanh(item*4)*height + height)/2;
+			x += pixelWidth + (factor*pixelWidth)*(1-(Math.abs(count-waveformRange))/waveformRange);
+			const y = (Math.tanh(item*8)*height + height)/2;
 			context.lineTo(x,y);
-			x += (pixelWidth)*(1-(Math.abs(count-waveformRange))/waveformRange);
-			
 			count += 1;
+		}
+		for (const item of drawArray.slice(startIndex+waveformRange, drawArray.length)){
+			x += pixelWidth;
+			const y = (item*height + height)/2;
+			context.lineTo(x,y)
 		}
 		context.lineTo(x, height/2);
 		console.log(width);
