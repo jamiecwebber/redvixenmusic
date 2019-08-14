@@ -39,10 +39,13 @@ class Player extends Component {
 
 	decodeBuffer(bufferSource) {
 		{
+			
 			this.bufferSource = this.audioContext.createBufferSource();
-			console.log(bufferSource);
 			return this.audioContext.decodeAudioData(bufferSource, (decodedData) => {
-				this.bufferSource.buffer = decodedData;
+				console.log(decodedData);
+				this.setState({audioBufferSource : decodedData});
+				console.log(this.state.audioBufferSource);
+				this.bufferSource.buffer = this.state.audioBufferSource;
 			})
 		}
 	}
@@ -213,12 +216,11 @@ class Player extends Component {
 			} else if (this.state.player === 'stopped') {
 				this.bufferSource.stop();
 				console.log(this.state.audioBufferSource);
+
+				this.bufferSource = this.audioContext.createBufferSource();
+				this.bufferSource.buffer = this.state.audioBufferSource;
+				this.bufferSource.connect(this.audioContext.destination);
 				
-				this.decodeBuffer(this.state.audioBufferSource)
-					.then(()=>{
-						console.log(this.bufferSource.buffer);
-					})
-					
 				//this.player.pause();
 				//this.player.currentTime = 0;
 			} else if (
@@ -226,6 +228,7 @@ class Player extends Component {
 				(prevState.player === 'paused' || prevState.player === 'stopped')
 			) {
 				console.log('play');
+				console.log(this.bufferSource);
 				this.bufferSource.start(0);
 				//this.player.play();
 			}
