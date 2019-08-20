@@ -17,9 +17,13 @@ class Player extends Component {
 			audioData: new Uint8Array(0),
 			audioBufferSource: null,
 			waveformArray: [],
-			arrayMax: 1
+			arrayMax: 1,
+			currentTime: 0,
+			startedAt: null,
+			pausedAt: null,
 		}
 		this.full = React.createRef();
+		this.tick = this.tick.bind(this.tick);
 		// this.full = React.createRef();
 	}
 
@@ -180,6 +184,14 @@ class Player extends Component {
 
 	}
 
+	tick() {
+		this.analyser.getByteTimeDomainData(this.dataArray);
+		this.setState({ audioData: this.dataArray });
+
+		console.log(Math.max(...this.state.audioData))
+		this.rafId = requestAnimationFrame(this.tick);
+	}
+
 	componentDidUpdate(prevProps, prevState) {
 		if (this.state.selectedTrack !== prevState.selectedTrack) {
 			let track;
@@ -200,23 +212,40 @@ class Player extends Component {
 			// console.log(this.state.player);
 			if (this.state.player === 'paused') {
 				//this.player.pause();
-			} else if (this.state.player === 'stopped') {
+				cancelAnimationFrame(this.rafId);
+				let elapsed = this.context.currentTime - this.state.startedAt;
 				this.bufferSource.stop();
+
+				this.bufferSource = this.audioContext.createBufferSource();
+				this.bufferSource.buffer = this.state.audioBufferSource;
+				this.bufferSource.connect(this.audioContext.destination);
+
+				this.setState({pausedAt: elapsed});
+
+			} else if (this.state.player === 'stopped') {
+
+				cancelAnimationFrame(this.rafId);
+				this.bufferSource.stop();
+
 				console.log(this.state.audioBufferSource);
 
 				this.bufferSource = this.audioContext.createBufferSource();
 				this.bufferSource.buffer = this.state.audioBufferSource;
 				this.bufferSource.connect(this.audioContext.destination);
+
+				this.setState({pausedAt: null})
 				
 				//this.player.pause();
-				//this.player.currentTime = 0;
+				this.state.currentTime = 0;
 			} else if (
 				this.state.player === 'playing' &&
 				(prevState.player === 'paused' || prevState.player === 'stopped')
 			) {
 				console.log('play');
 				console.log(this.bufferSource);
-				this.bufferSource.start(0);
+				let offset = this.state.pausedAt ? this.state.pausedAt : 0;
+				this.bufferSource.start(offset);
+				this.setState({startedAt: this.context.currentTime - offset})
 				//this.player.play();
 			}
 		}
