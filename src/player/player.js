@@ -90,7 +90,6 @@ class Player extends Component {
 		canvas.setAttribute('height', height);
 		canvas.setAttribute('width', width);
 
-
 		let x = 0;
 
 		// down-sample the full audio and line up the start index
@@ -145,34 +144,12 @@ class Player extends Component {
 	}
 
 	componentDidMount() {
-		//this.player.src = duet;
-		// timing needs to change with change to web api
-		//this.player.addEventListener("timeupdate", e => {
-		//	this.setState({
-		//		currentTime: e.target.currentTime,
-		//		duration: e.target.duration
-		//	});
-		//});
 
 		// event listeners for debugging
 		window.onload = () => {
 			console.log('window onload');
 		}
-		// this.player.oncanplay = () => {
-		// 	console.log('canplay');
-		// }
-		// this.player.onloadstart = () => {
-		// 	console.log('loadstart');
-		// }
-		// this.player.ondurationchange = () => {
-		// 	console.log('durationchange');
-		// }
-		// this.player.onloadedmetadata = () => {
-		// 	console.log('onloadedmetadata');
-		// }
-		// this.player.oncanplaythrough = () => {
-		// 	console.log('canplaythrough');
-		// }
+		
 		// audio analyser
 		this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
 		
@@ -201,9 +178,6 @@ class Player extends Component {
 				
 			})
 
-		//this.source = this.audioContext.createMediaElementSource(this.player);
-		//console.log(this.source);
-		//this.source.connect(this.audioContext.destination);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
