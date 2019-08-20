@@ -8,8 +8,6 @@ import eclair from '../audio/eclairdelune.wav'
 import duet from '../audio/duet.mp3'
 
 
-// user26 !!!
-
 class Player extends Component {
 	constructor() {
 		super();
@@ -26,7 +24,6 @@ class Player extends Component {
 	}
 
 	getAudioData(url) {
-
 		return fetch(url)
 		.then((response) => {
 			if (!response.ok) {
@@ -39,7 +36,6 @@ class Player extends Component {
 
 	decodeBuffer(bufferSource) {
 		{
-			
 			this.bufferSource = this.audioContext.createBufferSource();
 			return this.audioContext.decodeAudioData(bufferSource, (decodedData) => {
 				console.log(decodedData);
@@ -51,16 +47,11 @@ class Player extends Component {
 	}
 
 	getMax(buffer) {
-
 		var max = buffer.reduce((a,b) => {
 			const c = Math.max(Math.abs(a), Math.abs(b));
 			return (c === Math.abs(a)) ? a : b;
 		})
 		return max;
-	}
-
-	normalize() {
-
 	}
 
 	chunk(arr, len) {
@@ -83,13 +74,9 @@ class Player extends Component {
 		waveformArray = waveformArray.map(sample => sample/this.state.arrayMax);
 		this.setState({ waveformArray: waveformArray })
 		console.log(this.state.waveformArray.length);
-
-		// Draw the waveform
-
-		// TODO: adapt to changing screen size... don't recalculate array every time.
 	}
 
-	drawWave() {
+	drawWave(startIndex) {
 		const canvas = this.full.current;
 
 		let dpi = window.devicePixelRatio;
@@ -105,9 +92,12 @@ class Player extends Component {
 
 
 		let x = 0;
-		//
-		let grain = 15;
-		let pixelWidth = (width * grain) / this.state.waveformArray.length  ;
+
+		// down-sample the full audio and line up the start index
+		let grain = 4;
+		let pixelWidth = (width * grain) / this.state.waveformArray.length;
+		startIndex = startIndex / grain;
+
 		console.log("pixelWidth = " + pixelWidth);
 		
 		let drawArray = this.chunk(this.state.waveformArray, grain)
@@ -122,9 +112,13 @@ class Player extends Component {
 		console.log('after clearrect');
 		context.beginPath();
 		context.moveTo(0,height/2);
-		let startIndex = 80000;
-		let waveformRange = 200;
-		let yStretchFactor = 500;
+		let waveformRange = 150;
+
+		// handle beginning and end of file
+		if (startIndex < waveformRange) startIndex = waveformRange;
+		if (drawArray.length - startIndex < waveformRange) startIndex = drawArray.length - waveformRange;
+		
+		let yStretchFactor = 1000;
 		let xStretchFactor = 6;
 		pixelWidth = (width)/(drawArray.length + yStretchFactor*waveformRange);
 		for (const item of drawArray.slice(0, startIndex-waveformRange)){
@@ -197,7 +191,7 @@ class Player extends Component {
 				//this.state.player = 'playing';
 				this.setState({ arrayMax: this.getMax(this.bufferSource.buffer.getChannelData(0)) });
 				this.getWave(this.bufferSource.buffer.getChannelData(0), 1);
-				this.drawWave();
+				this.drawWave(0);
 				
 				
 				
