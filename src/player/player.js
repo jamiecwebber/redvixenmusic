@@ -78,7 +78,7 @@ class Player extends Component {
 		} else waveformArray = buffer;
 		waveformArray = waveformArray.map(sample => sample/this.state.arrayMax);
 		this.setState({ waveformArray: waveformArray })
-		console.log(this.state.waveformArray.length);
+		
 	}
 
 	drawWave(startIndex) {
@@ -102,18 +102,16 @@ class Player extends Component {
 		let pixelWidth = (width * grain) / this.state.waveformArray.length;
 		startIndex = startIndex / grain;
 
-		console.log("pixelWidth = " + pixelWidth);
 		
 		let drawArray = this.chunk(this.state.waveformArray, grain)
 		drawArray = drawArray.map(i => this.getMax(i));
-		console.log(drawArray.length)
-		console.log('AFTER draw array map')
+		
 		context.lineWidth = 1;
 		context.strokeStyle = 'rgba(0,0,0,1);'
 		context.fillStyle = 'rgba(0,0,0,1);'
-		console.log('before clearrect');
+		
 		context.clearRect(0,0,width,height);
-		console.log('after clearrect');
+		
 		context.beginPath();
 		context.moveTo(0,height/2);
 		let waveformRange = 150;
@@ -189,12 +187,11 @@ class Player extends Component {
 	}
 
 	tick = () => {
-		//this.analyser.getByteTimeDomainData(this.dataArray);
 		let offset = this.audioContext.currentTime - this.state.startedAt
 		this.setState({ 
-			currentTime: this.getTime(offset),
-			audioData: this.dataArray });
-
+			currentTime: this.getTime(offset)});
+		const startIndex = Math.floor(offset/this.state.duration * this.state.waveformArray.length)
+		this.drawWave(startIndex)
 		//console.log(Math.max(...this.state.audioData))
 		this.rafId = requestAnimationFrame(this.tick);
 	}
