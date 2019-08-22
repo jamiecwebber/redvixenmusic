@@ -211,6 +211,10 @@ class Player extends Component {
 				this.setState({player: 'playing'});
 			}
 		}
+		if (this.state.player === 'playing ' &&
+			this.audioContext.currentTime > (this.state.startedAt + this.state.duration)){
+			this.setState({player: 'stopped'});
+		} 
 		if (this.state.player !== prevState.player) {
 			// console.log(this.state.player);
 			if (this.state.player === 'paused') {
@@ -229,6 +233,7 @@ class Player extends Component {
 				if (prevState.player === 'playing') {
 					cancelAnimationFrame(this.rafId);
 					this.bufferSource.stop();
+					this.setState({currentTime:0});
 
 					console.log(this.state.audioBufferSource);
 
@@ -244,16 +249,14 @@ class Player extends Component {
 				this.state.player === 'playing' &&
 				(prevState.player === 'paused' || prevState.player === 'stopped')
 			) {
-				console.log('play');
-				console.log(this.bufferSource);
 				let offset = this.state.pausedAt ? this.state.pausedAt : 0;
-				console.log(offset);
 				this.bufferSource.start(this.audioContext.currentTime , offset);
 				this.setState({startedAt: this.audioContext.currentTime - offset})
 				this.rafId = requestAnimationFrame(this.tick);
 				//this.player.play();
 			}
 		}
+
 		// this.draw();
 	}
 
