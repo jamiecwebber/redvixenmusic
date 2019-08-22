@@ -19,6 +19,7 @@ class Player extends Component {
 			waveformArray: [],
 			arrayMax: 1,
 			currentTime: 0,
+			duration: null,
 			startedAt: null,
 			pausedAt: null,
 		}
@@ -170,7 +171,10 @@ class Player extends Component {
 				console.log(this.bufferSource.buffer);
 				//this.bufferSource.start(0);
 				//this.state.player = 'playing';
-				this.setState({ arrayMax: this.getMax(this.bufferSource.buffer.getChannelData(0)) });
+				this.setState({ 
+					arrayMax: this.getMax(this.bufferSource.buffer.getChannelData(0)),
+					duration: this.bufferSource.buffer.duration
+				});
 				this.getWave(this.bufferSource.buffer.getChannelData(0), 1);
 				this.drawWave(0);
 				
@@ -223,16 +227,16 @@ class Player extends Component {
 				this.setState({pausedAt: elapsed});
 
 			} else if (this.state.player === 'stopped') {
+				if (prevState.player === 'playing') {
+					cancelAnimationFrame(this.rafId);
+					this.bufferSource.stop();
 
-				cancelAnimationFrame(this.rafId);
-				this.bufferSource.stop();
+					console.log(this.state.audioBufferSource);
 
-				console.log(this.state.audioBufferSource);
-
-				this.bufferSource = this.audioContext.createBufferSource();
-				this.bufferSource.buffer = this.state.audioBufferSource;
-				this.bufferSource.connect(this.audioContext.destination);
-
+					this.bufferSource = this.audioContext.createBufferSource();
+					this.bufferSource.buffer = this.state.audioBufferSource;
+					this.bufferSource.connect(this.audioContext.destination);
+				}
 				this.setState({pausedAt: null})
 				
 				//this.player.pause();
@@ -244,6 +248,7 @@ class Player extends Component {
 				console.log('play');
 				console.log(this.bufferSource);
 				let offset = this.state.pausedAt ? this.state.pausedAt : 0;
+				console.log(offset)
 				this.bufferSource.start(offset);
 				this.setState({startedAt: this.context.currentTime - offset})
 				//this.player.play();
