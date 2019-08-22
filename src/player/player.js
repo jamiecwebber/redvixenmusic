@@ -17,6 +17,7 @@ class Player extends Component {
 			audioData: new Uint8Array(0),
 			audioBufferSource: null,
 			waveformArray: [],
+			fullWave: [],
 			arrayMax: 1,
 			currentTime: 0,
 			duration: null,
@@ -69,14 +70,15 @@ class Player extends Component {
 		return chunks;
 	}
 
-	getWave(buffer, n=10) {
+	getWave(buffer, n=1) {
 		// should reduce the full buffer to a more sensible size for visualization
 		// n is how much it downsamples by - by default downsamples by 10.
 		let waveformArray
 		if (n != 1) {
 			waveformArray = this.chunk(buffer, n).map(s => this.getMax(s));
 		} else waveformArray = buffer;
-		waveformArray = waveformArray.map(sample => sample/this.state.arrayMax);
+		this.arrayMax = this.getMax(waveformArray);
+		waveformArray = waveformArray.map(sample => sample/this.arrayMax);
 		this.setState({ waveformArray: waveformArray })
 		
 	}
@@ -98,13 +100,13 @@ class Player extends Component {
 		let x = 0;
 
 		// down-sample the full audio and line up the start index
-		let grain = 4;
+		let grain = 100;
 		let pixelWidth = (width * grain) / this.state.waveformArray.length;
 		startIndex = startIndex / grain;
 
 		
 		let drawArray = this.chunk(this.state.waveformArray, grain)
-		drawArray = drawArray.map(i => this.getMax(i));
+		drawArray = drawArray.map(i => i[0]);
 		
 		context.lineWidth = 1;
 		context.strokeStyle = 'rgba(0,0,0,1);'
@@ -120,16 +122,16 @@ class Player extends Component {
 		if (startIndex < waveformRange) startIndex = waveformRange;
 		if (drawArray.length - startIndex < waveformRange) startIndex = drawArray.length - waveformRange;
 		
-		let yStretchFactor = 1000;
-		let xStretchFactor = 6;
+		let yStretchFactor = 300;
+		let xStretchFactor = 10;
 		pixelWidth = (width)/(drawArray.length + yStretchFactor*waveformRange);
-		for (const item of drawArray.slice(0, startIndex-waveformRange)){
+		for (const item of drawArray.slice(0, (startIndex)-waveformRange)){
 			x += pixelWidth;
 			const y = (item*height + height)/2;
 			context.lineTo(x,y)
 		}
 		let count = 0;
-		for (const item of drawArray.slice(startIndex-waveformRange,startIndex+waveformRange)) {
+		for (const item of this.state.waveformArray.slice((startIndex*grain)-waveformRange,(startIndex*grain)+waveformRange)) {
 			x += pixelWidth + (yStretchFactor*pixelWidth)*(1-(Math.abs(count-waveformRange))/waveformRange);
 			const y = (Math.tanh(item + xStretchFactor*item*(1-(Math.abs(count-waveformRange))/waveformRange))*height + height)/2;
 			context.lineTo(x,y);
@@ -156,10 +158,6 @@ class Player extends Component {
 		// audio analyser
 		this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
 		
-		// this.canvas = document.getElementById('visualizer');
-		// this.canvasCtx = this.canvas.getContext('2d');
-		//console.log(this.player);
-
 		// creating fetch request to get audio data
 		this.getAudioData(duet)
 			.then(bufferSource => {
@@ -171,7 +169,8 @@ class Player extends Component {
 				//this.state.player = 'playing';
 				this.setState({ 
 					arrayMax: this.getMax(this.bufferSource.buffer.getChannelData(0)),
-					duration: this.bufferSource.buffer.duration
+					duration: this.bufferSource.buffer.duration,
+					fullWave: this.bufferSource.buffer.getChannelData(0)
 				});
 				this.getWave(this.bufferSource.buffer.getChannelData(0), 1);
 				this.drawWave(0);
@@ -190,7 +189,7 @@ class Player extends Component {
 		let offset = this.audioContext.currentTime - this.state.startedAt
 		this.setState({ 
 			currentTime: this.getTime(offset)});
-		const startIndex = Math.floor(offset/this.state.duration * this.state.waveformArray.length)
+		const startIndex = Math.floor(offset/this.state.duration * this.state.fullWave.length)
 		this.drawWave(startIndex)
 		//console.log(Math.max(...this.state.audioData))
 		this.rafId = requestAnimationFrame(this.tick);
