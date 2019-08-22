@@ -226,7 +226,7 @@ class Player extends Component {
 				this.bufferSource = this.audioContext.createBufferSource();
 				this.bufferSource.buffer = this.state.audioBufferSource;
 				this.bufferSource.connect(this.audioContext.destination);
-
+				console.log(elapsed);
 				this.setState({pausedAt: elapsed});
 
 			} else if (this.state.player === 'stopped') {
@@ -251,7 +251,7 @@ class Player extends Component {
 				console.log('play');
 				console.log(this.bufferSource);
 				let offset = this.state.pausedAt ? this.state.pausedAt : 0;
-				console.log(offset)
+				console.log(offset);
 				this.bufferSource.start(offset);
 				this.setState({startedAt: this.audioContext.currentTime - offset})
 				this.rafId = requestAnimationFrame(this.tick);
