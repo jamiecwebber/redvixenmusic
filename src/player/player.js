@@ -188,11 +188,14 @@ class Player extends Component {
 
 	}
 
-	tick() {
-		this.analyser.getByteTimeDomainData(this.dataArray);
-		this.setState({ audioData: this.dataArray });
+	tick = () => {
+		//this.analyser.getByteTimeDomainData(this.dataArray);
+		let offset = this.state.currentTime - this.state.startedAt
+		this.setState({ 
+			currentTime: this.getTime(offset),
+			audioData: this.dataArray });
 
-		console.log(Math.max(...this.state.audioData))
+		//console.log(Math.max(...this.state.audioData))
 		this.rafId = requestAnimationFrame(this.tick);
 	}
 
@@ -251,10 +254,19 @@ class Player extends Component {
 				console.log(offset)
 				this.bufferSource.start(offset);
 				this.setState({startedAt: this.context.currentTime - offset})
+				this.rafId = requestAnimationFrame(this.tick);
 				//this.player.play();
 			}
 		}
 		// this.draw();
+	}
+
+
+	getTime = (time) => {
+		console.log(time);
+		if(!isNaN(time)) {
+			return Math.floor(time/60) + ':' + ('0' + Math.floor(time % 60)).slice(-2)
+		}
 	}
 
 	componentWillUnmount() {
@@ -275,14 +287,9 @@ class Player extends Component {
 		});
 
 
-		function getTime(time) {
-			if(!isNaN(time)) {
-				return Math.floor(time/60) + ':' + ('0' + Math.floor(time % 60)).slice(-2)
-			}
-		}
 
-		const currentTime = getTime(this.state.currentTime);
-		const duration = getTime(this.state.duration);
+		const currentTime = this.getTime(this.state.currentTime - this.state.startedAt);
+		const duration = this.getTime(this.state.duration);
 
 		return (
 			<div className="player">
