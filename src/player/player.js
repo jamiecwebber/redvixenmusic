@@ -190,9 +190,10 @@ class Player extends Component {
 
 	tick = () => {
 		//this.analyser.getByteTimeDomainData(this.dataArray);
-		let offset = this.state.currentTime - this.state.startedAt
+		console.log(this.audioContext.currentTime);
+		let offset = this.audioContext.currentTime - this.state.startedAt
 		this.setState({ 
-			currentTime: this.getTime(offset),
+			currentTime: offset,
 			audioData: this.dataArray });
 
 		//console.log(Math.max(...this.state.audioData))
@@ -220,7 +221,7 @@ class Player extends Component {
 			if (this.state.player === 'paused') {
 				//this.player.pause();
 				cancelAnimationFrame(this.rafId);
-				let elapsed = this.context.currentTime - this.state.startedAt;
+				let elapsed = this.audioContext.currentTime - this.state.startedAt;
 				this.bufferSource.stop();
 
 				this.bufferSource = this.audioContext.createBufferSource();
@@ -263,7 +264,6 @@ class Player extends Component {
 
 
 	getTime = (time) => {
-		console.log(time);
 		if(!isNaN(time)) {
 			return Math.floor(time/60) + ':' + ('0' + Math.floor(time % 60)).slice(-2)
 		}
@@ -288,7 +288,7 @@ class Player extends Component {
 
 
 
-		const currentTime = this.getTime(this.state.currentTime - this.state.startedAt);
+		const currentTime = this.state.currentTime;
 		const duration = this.getTime(this.state.duration);
 
 		return (
