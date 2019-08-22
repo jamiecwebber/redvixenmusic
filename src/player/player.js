@@ -116,13 +116,13 @@ class Player extends Component {
 		
 		context.beginPath();
 		context.moveTo(0,height/2);
-		let waveformRange = 150;
+		let waveformRange = 500;
 
 		// handle beginning and end of file
 		if (startIndex < waveformRange) startIndex = waveformRange;
 		if (drawArray.length - startIndex < waveformRange) startIndex = drawArray.length - waveformRange;
 		
-		let yStretchFactor = 300;
+		let yStretchFactor = 50;
 		let xStretchFactor = 10;
 		pixelWidth = (width)/(drawArray.length + yStretchFactor*waveformRange);
 		for (const item of drawArray.slice(0, (startIndex)-waveformRange)){
@@ -266,6 +266,7 @@ class Player extends Component {
 
 	componentWillUnmount() {
 		//this.player.removeEventListener("timeupdate", ()=> {});
+		cancelAnimationFrame(this.rafId);
 	}
 
 	render() {
