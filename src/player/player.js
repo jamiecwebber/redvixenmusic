@@ -330,7 +330,7 @@ class Player extends Component {
 				<div className='waveform'>
 					{/* <canvas id='fullwave' ref={this.full} /> */}
 					{/* this.state.player === 'playing' && <AudioAnalyser context={this.audioContext} source={this.bufferSource} max={this.state.arrayMax}/> */}
-					<canvas style={{border:'2px solid orange', height:'100%', width:'100%'}} ref={this.full}/>
+					<canvas style={{height:'100%', width:'100%'}} ref={this.full}/>
 				</div>
 
 				{/*<audio ref={ref => this.player = ref} /> */}
