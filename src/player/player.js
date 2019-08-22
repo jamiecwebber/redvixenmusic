@@ -190,10 +190,9 @@ class Player extends Component {
 
 	tick = () => {
 		//this.analyser.getByteTimeDomainData(this.dataArray);
-		console.log(this.audioContext.currentTime);
 		let offset = this.audioContext.currentTime - this.state.startedAt
 		this.setState({ 
-			currentTime: offset,
+			currentTime: this.getTime(offset),
 			audioData: this.dataArray });
 
 		//console.log(Math.max(...this.state.audioData))
@@ -254,7 +253,7 @@ class Player extends Component {
 				let offset = this.state.pausedAt ? this.state.pausedAt : 0;
 				console.log(offset)
 				this.bufferSource.start(offset);
-				this.setState({startedAt: this.context.currentTime - offset})
+				this.setState({startedAt: this.audioContext.currentTime - offset})
 				this.rafId = requestAnimationFrame(this.tick);
 				//this.player.play();
 			}
