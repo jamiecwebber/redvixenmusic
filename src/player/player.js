@@ -100,8 +100,10 @@ class Player extends Component {
 		let x = 0;
 
 		// down-sample the full audio and line up the start index
-		let grain = 100;
-		let pixelWidth = (width * grain) / this.state.waveformArray.length;
+		let grain = 40;
+
+		let waveformRange = 800;
+		let pixelWidth = (width*grain + 2*waveformRange/grain) / this.state.waveformArray.length;
 		startIndex = startIndex / grain;
 
 		
@@ -116,16 +118,15 @@ class Player extends Component {
 		
 		context.beginPath();
 		context.moveTo(0,height/2);
-		let waveformRange = 500;
 
 		// handle beginning and end of file
-		if (startIndex < waveformRange) startIndex = waveformRange;
-		if (drawArray.length - startIndex < waveformRange) startIndex = drawArray.length - waveformRange;
+		if (startIndex < (waveformRange/grain)) startIndex = Math.floor(waveformRange/grain);
+		if (drawArray.length - startIndex < (waveformRange/grain)) startIndex = drawArray.length - Math.floor(waveformRange/grain);
 		
-		let yStretchFactor = 50;
-		let xStretchFactor = 10;
-		pixelWidth = (width)/(drawArray.length + yStretchFactor*waveformRange);
-		for (const item of drawArray.slice(0, (startIndex)-waveformRange)){
+		let yStretchFactor = 30;
+		let xStretchFactor = 3;
+		pixelWidth = (width)/(drawArray.length + yStretchFactor*(waveformRange/grain));
+		for (const item of drawArray.slice(0, (startIndex)-(waveformRange/grain))){
 			x += pixelWidth;
 			const y = (item*height + height)/2;
 			context.lineTo(x,y)
@@ -137,7 +138,7 @@ class Player extends Component {
 			context.lineTo(x,y);
 			count += 1;
 		}
-		for (const item of drawArray.slice(startIndex+waveformRange, drawArray.length)){
+		for (const item of drawArray.slice(startIndex+(waveformRange/grain), drawArray.length)){
 			x += pixelWidth;
 			const y = (item*height + height)/2;
 			context.lineTo(x,y)
@@ -164,9 +165,6 @@ class Player extends Component {
 				return this.decodeBuffer(bufferSource);
 			})
 			.then(() => {
-				console.log(this.bufferSource.buffer);
-				//this.bufferSource.start(0);
-				//this.state.player = 'playing';
 				this.setState({ 
 					arrayMax: this.getMax(this.bufferSource.buffer.getChannelData(0)),
 					duration: this.bufferSource.buffer.duration,
@@ -175,12 +173,7 @@ class Player extends Component {
 				this.getWave(this.bufferSource.buffer.getChannelData(0), 1);
 				this.drawWave(0);
 				
-				
-				
-				console.log(this.state.arrayMax);
 				this.bufferSource.connect(this.audioContext.destination);
-				
-				
 			})
 
 	}
@@ -192,7 +185,13 @@ class Player extends Component {
 		const startIndex = Math.floor(offset/this.state.duration * this.state.fullWave.length)
 		this.drawWave(startIndex)
 		//console.log(Math.max(...this.state.audioData))
-		this.rafId = requestAnimationFrame(this.tick);
+		if (offset > this.state.duration) {
+			this.setState({player: 'stopped'})
+		}
+		else {
+			this.rafId = requestAnimationFrame(this.tick);
+		}
+
 	}
 
 	componentDidUpdate(prevProps, prevState) {
